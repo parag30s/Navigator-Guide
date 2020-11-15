@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Navigators Guide</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="menu_nav_1">Home</string>
+    <string name="menu_nav_2">About Us</string>
+    <string name="menu_nav_3">Contact Us</string>
+
+    <string name="the_concept">How we conceptualize a ship inspection-preparation is much different from conventional methods. We work with companies, training institutes or Pre-Vetting Inspectors to develop their inspection processes and improve results. There’s a ton of Free stuff for seafarers.\nTo know how we do it, and the many benefits involved, view a demo, or contact us. We shall be happy to personalize a demo exclusively for you!</string>
+    <string name="login_footer_text">You are not a member? <font color='#F23B5F'>Register</font>.</string>
+    <string name="register_footer_text">Already have an account? <font color='#F23B5F'>Login</font>.</string>
+
+    <string name="err_msg_message_network">It Seems you don\'t have active internet connection.</string>
+    <string name="err_msg_account_exist">We already have account registered with this email.</string>
+    <string name="err_msg_login">Incorrect email/password</string>
+    <string name="err_msg_name">Enter your full name</string>
+    <string name="err_msg_email">Enter your valid email address</string>
+    <string name="err_reg_email">Enter your registered email address</string>
+    <string name="err_msg_password">Enter your password</string>
+    <string name="err_msg_password_length">Password must be at least 8 characters long</string>
+    <string name="err_msg_position">Select your Position</string>
+    <string name="err_msg_shiptype">Select your Ship Type</string>
+    <string name="err_msg_res_failed">Something went wrong. Please try again.</string>
+
+    <string name="txt_yes">Yes</string>
+    <string name="txt_no">No</string>
+    <string name="txt_na">Not Applicable</string>
+
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="position">
+        <item>Managing Director</item>
+        <item>Master</item>
+        <item>Chief Engineer</item>
+        <item>Senior Deck Officer</item>
+        <item>Senior Engineer Officer</item>
+        <item>Catering Staff</item>
+        <item>Visitor</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,80 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Action.Start" parent="android:Theme.Holo.Light">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ButtonStyle" parent="android:Widget.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:height">@dimen/button_height</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingEnd">@dimen/dimen_30</item>
+        <item name="android:paddingStart">@dimen/dimen_30</item>
+        <item name="android:paddingLeft">@dimen/dimen_30</item>
+        <item name="android:paddingRight">@dimen/dimen_30</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_5</item>
+        <item name="android:layout_marginRight">@dimen/dimen_5</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="CustomProgressDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="DashBoardItemStyle" parent="android:Widget.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">#90000000</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingEnd">@dimen/dimen_8</item>
+        <item name="android:paddingStart">@dimen/dimen_8</item>
+        <item name="android:paddingLeft">@dimen/dimen_8</item>
+        <item name="android:paddingRight">@dimen/dimen_8</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="TextViewStyle" parent="android:Widget.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingBottom">@dimen/dimen_12</item>
+        <item name="android:paddingTop">@dimen/dimen_12</item>
+        <item name="android:paddingEnd">@dimen/dimen_8</item>
+        <item name="android:paddingStart">@dimen/dimen_8</item>
+        <item name="android:paddingLeft">@dimen/dimen_8</item>
+        <item name="android:paddingRight">@dimen/dimen_8</item>
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+</resources>

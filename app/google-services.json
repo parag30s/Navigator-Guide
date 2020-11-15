@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "775030632157",
+    "firebase_url": "https://navigatorsguide-4ed24.firebaseio.com",
+    "project_id": "navigatorsguide-4ed24",
+    "storage_bucket": "navigatorsguide-4ed24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775030632157:android:9f449e85cc33f7535eb534",
+        "android_client_info": {
+          "package_name": "com.navigatorsguide.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775030632157-8g3tc9kehd9q5pa36r9p1b6nqn2o5s4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvrV8MCSRrffXA8ffHEkos4U4GDZNGHkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775030632157-8g3tc9kehd9q5pa36r9p1b6nqn2o5s4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

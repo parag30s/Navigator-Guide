@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/dimen_30"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="Hello There!"
+        android:textColor="@color/colorTextDark"
+        android:textSize="@dimen/text_40" />
+
+    <EditText
+        android:id="@+id/name_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/dimen_30"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:hint="Full Name"
+        android:inputType="textPersonName"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <EditText
+        android:id="@+id/email_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <EditText
+        android:id="@+id/password_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <EditText
+        android:id="@+id/position_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down"
+        android:drawableRight="@drawable/ic_baseline_arrow_drop_down"
+        android:hint="Position"
+        android:inputType="none"
+        android:focusable="false"
+        android:enabled="true"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <EditText
+        android:id="@+id/shiptype_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down"
+        android:drawableRight="@drawable/ic_baseline_arrow_drop_down"
+        android:hint="Ship Type"
+        android:inputType="none"
+        android:focusable="false"
+        android:enabled="true"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <Button
+        android:id="@+id/register_button"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_40"
+        android:text="Register"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_16" />
+
+    <TextView
+        android:id="@+id/login_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/dimen_40"
+        android:gravity="top|center_horizontal"
+        android:text="@string/register_footer_text"
+        android:textSize="@dimen/text_16" />
+</LinearLayout>
