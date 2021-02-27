@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_150"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorDiv"
+                android:foreground="#cc23283a"
+                android:src="@drawable/ic_pattern_bg" />
+
+            <TextView
+                android:id="@+id/name_thumb_text_view"
+                android:layout_width="@dimen/dimen_50"
+                android:layout_height="@dimen/dimen_50"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_20"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@drawable/drawable_name_thumbnail_bg"
+                android:gravity="center"
+                android:maxLength="2"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_24" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_90"
+                android:layout_marginLeft="@dimen/dimen_90"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_20" />
+
+                <TextView
+                    android:id="@+id/time_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/edittext_background"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_baseline_email" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5"
+                android:layout_marginBottom="@dimen/dimen_5"
+                android:layout_weight="0.85"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email ID"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/email_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="parag30s@gmail.com"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:background="@drawable/edittext_background"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_baseline_lock" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5"
+                android:layout_marginBottom="@dimen/dimen_5"
+                android:layout_weight="0.85"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/password_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/edittext_background"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_baseline_person" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accChangeAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5"
+                android:layout_marginBottom="@dimen/dimen_5"
+                android:layout_weight="0.7"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Position"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/position_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="e. g. Chief Engineer"
+                    android:maxLines="2"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="@dimen/dimen_0.5"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_15"
+                android:layout_marginBottom="@dimen/dimen_15"
+                android:background="@color/colorBlack" />
+
+            <LinearLayout
+                android:id="@+id/edit_position_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_baseline_edit"
+                    app:tint="@color/colorBlack" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:background="@drawable/edittext_background"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_baseline_ship" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accChangePassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5"
+                android:layout_marginBottom="@dimen/dimen_5"
+                android:layout_weight="0.7"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ship Type"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/ship_type_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="e. g. Bulk Carrier"
+                    android:singleLine="true"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="@dimen/dimen_0.5"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/dimen_15"
+                android:layout_marginBottom="@dimen/dimen_15"
+                android:background="@color/colorBlack" />
+
+            <LinearLayout
+                android:id="@+id/edit_shiptype_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_baseline_edit"
+                    app:tint="@color/colorBlack" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_20"
+            android:gravity="center"
+            android:text="Please note that you are responsible for the information you filling in your account. It may block your access for any part of the application."
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+</ScrollView>

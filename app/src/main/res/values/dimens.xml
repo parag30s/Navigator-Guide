@@ -9,6 +9,7 @@
     <dimen name="edittext_height">45dp</dimen>
 
     <!-- DP values -->
+    <dimen name="dimen_0.5">0.5dp</dimen>
     <dimen name="dimen_1">1dp</dimen>
     <dimen name="dimen_2">2dp</dimen>
     <dimen name="dimen_4">4dp</dimen>
@@ -24,12 +25,21 @@
     <dimen name="dimen_40">40dp</dimen>
     <dimen name="dimen_45">45dp</dimen>
     <dimen name="dimen_50">50dp</dimen>
+    <dimen name="dimen_70">70dp</dimen>
+    <dimen name="dimen_80">80dp</dimen>
+    <dimen name="dimen_90">90dp</dimen>
+    <dimen name="dimen_100">100dp</dimen>
+    <dimen name="dimen_150">150dp</dimen>
     <dimen name="dimen_160">160dp</dimen>
+    <dimen name="dimen_200">200dp</dimen>
 
     <!-- SP values -->
     <dimen name="text_14">14sp</dimen>
     <dimen name="text_15">15sp</dimen>
     <dimen name="text_16">16sp</dimen>
+    <dimen name="text_17">17sp</dimen>
     <dimen name="text_18">18sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_24">24sp</dimen>
     <dimen name="text_40">40sp</dimen>
 </resources>

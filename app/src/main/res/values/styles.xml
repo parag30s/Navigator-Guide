@@ -5,17 +5,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/global_font</item>
+        <item name="fontFamily">@font/global_font</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/futurastdmedium</item>
+        <item name="fontFamily">@font/futurastdmedium</item>
     </style>
 
     <style name="Theme.Action.Start" parent="android:Theme.Holo.Light">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="fontFamily">@font/futurastdmedium</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 

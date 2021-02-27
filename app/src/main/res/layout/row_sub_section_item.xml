@@ -7,21 +7,34 @@
     android:layout_centerInParent="true"
     android:layout_margin="@dimen/dimen_8"
     android:background="@color/colorBackground"
-    app:cardCornerRadius="@dimen/dimen_8"
-    android:elevation="@dimen/dimen_8">
+    android:elevation="@dimen/dimen_8"
+    app:cardCornerRadius="@dimen/dimen_8">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
+        <ImageView
+            android:id="@+id/section_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimen_10"
+            android:src="@drawable/ic_section_incomplete" />
+
         <TextView
             android:id="@+id/section_title"
             style="@style/TextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/dimen_2" />
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimen_2"
+            android:layout_toStartOf="@id/section_status"
+            android:layout_toLeftOf="@id/section_status" />
+
 
     </RelativeLayout>
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50"
+        android:background="@color/colorContent"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_18" />
+
+    <EditText
+        android:id="@+id/dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10"
+        android:background="@drawable/drawable_radio_button"
+        android:hint="@string/hint_comment_dialog"
+        android:inputType="textMultiLine|text"
+        android:padding="@dimen/dimen_8" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1"
+        android:background="@color/colorDiv" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_50"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/txt_save"
+            android:textColor="@color/colorAccent" />
+
+        <View
+            android:layout_width="@dimen/dimen_1"
+            android:layout_height="match_parent"
+            android:background="@color/colorDiv" />
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_50"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/txt_cancel"
+            android:textColor="@color/colorAccent" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

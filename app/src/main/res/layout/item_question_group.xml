@@ -13,6 +13,6 @@
         android:layout_marginStart="@dimen/dimen_10"
         android:layout_marginEnd="@dimen/dimen_10"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/text_18" />
+        android:textSize="@dimen/text_16" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

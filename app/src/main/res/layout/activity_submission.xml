@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextInput"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimen_10"
+            android:padding="@dimen/dimen_5"
+            android:text="Are any observations sited?"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_16" />
+
+        <RadioGroup
+            android:id="@+id/observation_group"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_35"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/dimen_10"
+            android:background="@drawable/outline"
+            android:checkedButton="@+id/off"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_observation_no"
+                android:layout_width="@dimen/dimen_50"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_1"
+                android:layout_weight="1"
+                android:background="@drawable/switch_off"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:onClick="onRadioButtonClicked"
+                android:text="NO"
+                android:textColor="@drawable/switch_text" />
+
+            <RadioButton
+                android:id="@+id/radio_observation_yes"
+                android:layout_width="@dimen/dimen_50"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_1"
+                android:layout_weight="1"
+                android:background="@drawable/switch_on"
+                android:button="@null"
+                android:gravity="center"
+                android:onClick="onRadioButtonClicked"
+                android:text="YES"
+                android:textColor="@drawable/switch_text" />
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1"
+            android:layout_below="@id/observation_group"
+            android:background="@color/colorBackground" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/additional_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/dimen_5"
+                    android:text="Your observations"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_16" />
+
+                <EditText
+                    android:id="@+id/observations_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/edittext_background"
+                    android:hint="Observations (If any)"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="90dp"
+                    android:minHeight="45dp"
+                    android:paddingStart="@dimen/dimen_20"
+                    android:paddingEnd="@dimen/dimen_20"
+                    android:textSize="@dimen/text_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/dimen_5"
+                    android:text="Target date of closure"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_16" />
+
+                <EditText
+                    android:id="@+id/date_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/edittext_background"
+                    android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_baseline_date_range"
+                    android:drawableRight="@drawable/ic_baseline_date_range"
+                    android:enabled="true"
+                    android:focusable="false"
+                    android:hint="DD-MM-YYYY"
+                    android:inputType="none"
+                    android:paddingStart="@dimen/dimen_20"
+                    android:paddingEnd="@dimen/dimen_20"
+                    android:textSize="@dimen/text_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/dimen_5"
+                    android:text="Type of Observation (Risk Profile)"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_16" />
+
+                <RadioGroup
+                    android:id="@+id/risk_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:checkedButton="1"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_high"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onCheckboxClicked"
+                        android:text="High Risk" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onCheckboxClicked"
+                        android:text="Medium Risk" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_low"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onCheckboxClicked"
+                        android:text="Low Risk" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:padding="@dimen/dimen_5"
+                    android:text="Upload supporting files, if any (Max Size 2 MB)"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_16" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/edittext_background"
+                    android:hint="Browse Files"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="90dp"
+                    android:minHeight="45dp"
+                    android:paddingStart="@dimen/dimen_20"
+                    android:paddingEnd="@dimen/dimen_20"
+                    android:textSize="@dimen/text_16" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:padding="@dimen/dimen_5"
+                android:text="Anything you would like to add"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_16" />
+
+            <EditText
+                android:id="@+id/comments_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:background="@drawable/edittext_background"
+                android:hint="Comments (If any)"
+                android:inputType="textMultiLine"
+                android:maxHeight="90dp"
+                android:minHeight="45dp"
+                android:paddingStart="@dimen/dimen_20"
+                android:paddingEnd="@dimen/dimen_20"
+                android:textSize="@dimen/text_16" />
+
+            <Button
+                android:id="@+id/submit_button"
+                style="@style/ButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_height"
+                android:layout_below="@id/password_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:onClick="onSubmission"
+                android:text="Submit"
+                android:textSize="@dimen/text_14" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

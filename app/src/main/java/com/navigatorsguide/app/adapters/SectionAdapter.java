@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import java.util.List;
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionHolder> {
     private Context mContext;
     private List<Section> mList;
+    private List<Integer> mEligibilityList;
     private OnItemClickListener mListener;
     private int mWidth;
 
@@ -29,9 +31,10 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionH
         public void onItemClick(Section item);
     }
 
-    public SectionAdapter(Context context, List<Section> list, int width, OnItemClickListener listener) {
+    public SectionAdapter(Context context, List<Section> list, List<Integer> eligibilityList, int width, OnItemClickListener listener) {
         this.mContext = context;
         this.mList = list;
+        this.mEligibilityList = eligibilityList;
         this.mWidth = width;
         this.mListener = listener;
     }
@@ -49,6 +52,11 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionH
     public void onBindViewHolder(@NonNull SectionHolder holder, int position) {
         holder.mTextView.setText(mList.get(position).getSectionName());
         holder.mImageView.setImageResource(AppUtils.Companion.getSectionThumbnail(mList.get(position).getSectionid()));
+        if(!mEligibilityList.contains(mList.get(position).getSectionid())){
+           holder.mLockLayout.setVisibility(View.VISIBLE);
+        } else{
+            holder.mLockLayout.setVisibility(View.GONE);
+        }
         holder.bind(mList.get(position), mListener);
     }
 
@@ -61,12 +69,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionH
         CardView mSectionView;
         ImageView mImageView;
         TextView mTextView;
+        RelativeLayout mLockLayout;
 
         public SectionHolder(@NonNull View itemView, int mWidth) {
             super(itemView);
             mSectionView = itemView.findViewById(R.id.section_cardview);
             mImageView = itemView.findViewById(R.id.section_image);
             mTextView = itemView.findViewById(R.id.section_title);
+            mLockLayout = itemView.findViewById(R.id.lock_content_layout);
             mSectionView.getLayoutParams().height = (mWidth/3);
             mSectionView.getLayoutParams().width = (mWidth/2);
         }

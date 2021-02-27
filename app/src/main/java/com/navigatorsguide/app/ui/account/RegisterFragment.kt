@@ -1,6 +1,7 @@
 package com.navigatorsguide.app.ui.account
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -9,7 +10,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.*
+import com.google.firebase.iid.FirebaseInstanceId
 import com.navigatorsguide.app.BaseFragment
 import com.navigatorsguide.app.R
 import com.navigatorsguide.app.database.AppDatabase
@@ -37,9 +40,10 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
     private var mFirebaseReference: DatabaseReference? = null
     private var mFirebaseDatabase: FirebaseDatabase? = null
 
-    private lateinit var mRankList: List<Rank> ;
-    private lateinit var mShipTypeList: List<ShipType>;
+    private lateinit var mRankList: List<Rank> 
+    private lateinit var mShipTypeList: List<ShipType>
     private lateinit var mKey: String
+    private lateinit var mToken: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +76,16 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
                 mShipTypeList = db.getShipTypeDao().getAllShipType()
             }
         }
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("MainActivity", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+               mToken = task.result?.token.toString()
+            })
         return view
     }
 
@@ -178,6 +192,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
             password,
             position,
             shipType,
+            mToken,
             System.currentTimeMillis().toString()
         )
         mFirebaseReference!!.child(AppUtils.checkUserId(userId)).setValue(user)

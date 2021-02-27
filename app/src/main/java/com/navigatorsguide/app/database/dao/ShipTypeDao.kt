@@ -9,4 +9,7 @@ interface ShipTypeDao {
 
     @Query("SELECT * FROM ShipType")
     suspend fun getAllShipType(): List<ShipType>
+
+    @Query("SELECT typeId FROM ShipType WHERE typeName =:mType")
+    suspend fun getIdFromShip(mType: String): Int
 }

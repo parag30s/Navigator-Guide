@@ -60,8 +60,10 @@ class SubSectionActivity: BaseActivity(), SubSectionAdapter.OnItemClickListener 
 
     override fun onItemClick(item: SubSection?) {
         val intent = Intent(this, QuestionsActivity::class.java)
-        intent.putExtra(AppConstants.SUBS_PARENT, item?.subsparent)
+        intent.putExtra(AppConstants.SUBS_ID, item?.subsid)
         intent.putExtra(AppConstants.SECTION_NAME, item?.subsname)
+        intent.putExtra(AppConstants.SECTION_LINK, item?.subLink)
+        intent.putExtra(AppConstants.SECTION_NOTE, item?.note)
         startActivity(intent)
     }
 }

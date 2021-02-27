@@ -5,17 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.navigatorsguide.app.BaseFragment
 import com.navigatorsguide.app.R
 import com.navigatorsguide.app.adapters.SectionAdapter
 import com.navigatorsguide.app.database.AppDatabase
 import com.navigatorsguide.app.database.entities.Section
+import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.utils.AppConstants
 import com.navigatorsguide.app.utils.AppUtils
+import com.navigatorsguide.app.utils.Eligibility
 import com.navigatorsguide.app.utils.SpacesItemDecoration
 import kotlinx.coroutines.launch
 
@@ -27,28 +32,39 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
     private lateinit var homeViewModel: HomeViewModel
 
     lateinit var sectionList: List<Section>
+    lateinit var eligibleList: List<Int>
+    private var rankId: Int = 0
+    private var shipId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         recyclerView = root.findViewById(R.id.section_recyclerview)
-
         launch {
             context?.let {
                 sectionList = AppDatabase.invoke(requireActivity()).getSectionDao().getAllSections()
-                setSectionAdapter();
+                rankId = AppDatabase.invoke(requireActivity()).getRankDao()
+                    .getIdFromRank(PreferenceManager.getRegistrationInfo(requireActivity())!!.position)
+                shipId = AppDatabase.invoke(requireActivity()).getShipTypeDao()
+                    .getIdFromShip(PreferenceManager.getRegistrationInfo(requireActivity())!!.shipType)
+
+                PreferenceManager.savePositionId(requireActivity(), rankId)
+                PreferenceManager.saveShipTypeId(requireActivity(), shipId)
+                setSectionAdapter()
             }
         }
         return root
     }
 
-    fun setSectionAdapter(){
-        sectionAdapter = SectionAdapter(activity, sectionList, AppUtils.getScreenWidth(), this)
+    private fun setSectionAdapter() {
+        eligibleList = Eligibility.isEligibleSection(sectionList, rankId)
+        sectionAdapter =
+            SectionAdapter(activity, sectionList, eligibleList, AppUtils.getScreenWidth(), this)
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.addItemDecoration(SpacesItemDecoration(0));
@@ -56,12 +72,27 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(item: Section?) {
-        activity?.let{
-            val intent = Intent (it, SubSectionActivity::class.java)
-            intent.putExtra(AppConstants.SECTION_ID, item?.sectionid)
-            intent.putExtra(AppConstants.SECTION_NAME, item?.sectionName)
-            it.startActivity(intent)
+        if (eligibleList.contains(item?.sectionid)) {
+            activity?.let {
+                val intent = Intent(it, SubSectionActivity::class.java)
+                intent.putExtra(AppConstants.SECTION_ID, item?.sectionid)
+                intent.putExtra(AppConstants.SECTION_NAME, item?.sectionName)
+                it.startActivity(intent)
+            }
+        } else {
+            val bottomSheet = layoutInflater.inflate(R.layout.dialog_locked_section, null)
+            val dialog = BottomSheetDialog(requireActivity())
+            dialog.setContentView(bottomSheet)
+            val mTitle: TextView? = dialog.findViewById(R.id.bottom_title_text)
+            val mMessage: TextView? = dialog.findViewById(R.id.bottom_message_text)
+            val mButtonYes: Button? = dialog.findViewById(R.id.bottom_yes_button)
+            val mButtonNo: Button? = dialog.findViewById(R.id.bottom_no_button)
+
+            mTitle?.text = "Unlock section!"
+            mMessage?.text = getString(R.string.err_msg_content_locked)
+            mButtonYes?.text = "Yes, please"
+            mButtonNo?.text = "No"
+            dialog.show()
         }
     }
-
 }

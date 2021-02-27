@@ -2,16 +2,40 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.navigatorsguide.app">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
+        android:name=".NavigatorGuideApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <service
+            android:name=".messaging.AppMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
@@ -30,9 +54,20 @@
             android:name=".ui.account.OnBoardingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.home.SubSectionActivity" />
+            android:name=".ui.home.SubSectionActivity"
+            android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.home.QuestionsActivity" />
+            android:name=".ui.home.QuestionsActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.home.SubmissionActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".utils.ImagePreviewActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.report.ReportBuilderActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

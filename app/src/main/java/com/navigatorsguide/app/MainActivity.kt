@@ -1,10 +1,7 @@
 package com.navigatorsguide.app
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,14 +11,19 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
 import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.model.User
-import com.navigatorsguide.app.ui.account.OnBoardingActivity
+import com.navigatorsguide.app.utils.AppConstants
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private var mDatabaseReference: DatabaseReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_profile, R.id.nav_report, R.id.nav_slideshow
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -46,29 +48,26 @@ class MainActivity : AppCompatActivity() {
         val userName = userLayout.findViewById(R.id.nav_user_name) as TextView
         val userEmail = userLayout.findViewById<TextView>(R.id.nav_user_email) as TextView
         val user: User? = PreferenceManager.getRegistrationInfo(this)
-        if(user?.getUserName() != null
-            && user.getEmail() != null){
+        if (user?.getUserName() != null
+            && user.getEmail() != null
+        ) {
             userName.text = user.getUserName()
             userEmail.text = user.getEmail()
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+        mDatabaseReference =
+            FirebaseDatabase.getInstance().getReference(AppConstants.USER_REFERENCE)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.action_logout){
-            PreferenceManager.deleteRegistartionInfo(this)
-            PreferenceManager.saveAuthenticationStatus(this, false)
-            val intent = Intent(this, OnBoardingActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            finish()
-        }
-        return super.onOptionsItemSelected(item)
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("MainActivity", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                val token = task.result?.token
+                mDatabaseReference!!.child(user!!.userId).child(AppConstants.USER_TOKEN).setValue(token)
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {

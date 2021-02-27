@@ -28,8 +28,25 @@
                 style="@style/DashBoardItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/dimen_25"
-                android:layout_alignParentBottom="true" />
+                android:layout_alignParentBottom="true"
+                android:minHeight="@dimen/dimen_25" />
+
+            <RelativeLayout
+                android:id="@+id/lock_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#80ffffff">
+
+                <View
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:layout_margin="@dimen/dimen_5"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_baseline_lock"
+                    android:backgroundTint="@color/colorBlack" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

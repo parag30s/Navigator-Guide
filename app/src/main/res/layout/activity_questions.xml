@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/questionnaire_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/background">
+    android:layout_height="match_parent">
 
     <ExpandableListView
         android:id="@+id/questions_exp_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:groupIndicator="@null"
-        android:divider="@null" />
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:divider="@null"
+        android:groupIndicator="@null" />
+
+    <Button
+        android:id="@+id/proceed_button"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimen_15"
+        android:contentDescription="@string/appbar_scrolling_view_behavior"
+        android:drawableStart="@drawable/ic_baseline_send"
+        android:drawableLeft="@drawable/ic_baseline_send"
+        android:drawablePadding="@dimen/dimen_15"
+        android:drawableTint="@color/colorWhite"
+        android:text="@string/txt_proceed" />
+
+    <TextView
+        android:id="@+id/empty_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/dimen_90"
+        android:gravity="center"
+        android:text="No checklist found for your rank and ship type."
+        android:textSize="@dimen/text_16"
+        android:visibility="gone" />
+
 </RelativeLayout>

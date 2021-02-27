@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/dimen_5"
@@ -19,56 +20,118 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_10"
-            android:layout_marginTop="@dimen/dimen_5"
+            android:layout_marginLeft="@dimen/dimen_10"
+            android:layout_marginTop="@dimen/dimen_10"
             android:layout_marginEnd="@dimen/dimen_10"
-            android:textColor="@color/colorTextHint"
-            android:textSize="@dimen/text_16"
+            android:layout_marginRight="@dimen/dimen_10"
+            android:textColor="@color/colorContent"
+            android:textSize="@dimen/text_15"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/link_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10"
+            android:layout_marginLeft="@dimen/dimen_10"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:layout_marginEnd="@dimen/dimen_10"
+            android:layout_marginRight="@dimen/dimen_10"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/text_15"
             android:visibility="gone" />
 
         <RadioGroup
             android:id="@+id/radio_group_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_10"
+            android:layout_margin="@dimen/dimen_10"
             android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/radio_yes_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_12"
-                android:layout_marginStart="@dimen/dimen_10"
-                android:layout_marginEnd="@dimen/dimen_10"
-                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_height="@dimen/dimen_45"
                 android:background="@drawable/drawable_radio_button"
-                android:text="@string/txt_yes"
-                android:textSize="@dimen/text_16" />
+                android:padding="@dimen/dimen_10"
+                android:text="@string/txt_ya"
+                android:textSize="@dimen/text_15" />
 
             <RadioButton
                 android:id="@+id/radio_no_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_12"
-                android:layout_marginStart="@dimen/dimen_10"
-                android:layout_marginEnd="@dimen/dimen_10"
+                android:layout_height="@dimen/dimen_45"
                 android:layout_marginTop="@dimen/dimen_10"
                 android:background="@drawable/drawable_radio_button"
+                android:padding="@dimen/dimen_10"
                 android:text="@string/txt_no"
-                android:textSize="@dimen/text_16" />
+                android:textSize="@dimen/text_15" />
 
             <RadioButton
                 android:id="@+id/radio_na_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_12"
-                android:layout_marginStart="@dimen/dimen_10"
-                android:layout_marginEnd="@dimen/dimen_10"
+                android:layout_height="@dimen/dimen_45"
                 android:layout_marginTop="@dimen/dimen_10"
                 android:background="@drawable/drawable_radio_button"
+                android:padding="@dimen/dimen_10"
                 android:text="@string/txt_na"
-                android:textSize="@dimen/text_16" />
+                android:textSize="@dimen/text_15" />
 
         </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_2"
+            android:background="@color/colorBackground" />
+
+        <TextView
+            android:id="@+id/comment_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10"
+            android:background="@drawable/edittext_background"
+            android:drawablePadding="@dimen/dimen_10"
+            android:hint="Enter your Comment (If Any)"
+            android:padding="@dimen/dimen_12"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/text_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_2"
+            android:background="@color/colorBackground" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10"
+            android:background="@drawable/edittext_background"
+            android:foreground="@drawable/drawable_dashed_border"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dimen_30"
+                android:layout_height="@dimen/dimen_30"
+                android:layout_margin="@dimen/dimen_10"
+                app:cardCornerRadius="@dimen/dimen_50">
+
+                <ImageView
+                    android:id="@+id/attachment_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/attachment_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorTextDark"
+                android:textSize="@dimen/text_15" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </LinearLayout>
 

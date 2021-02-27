@@ -8,11 +8,12 @@ public class User {
     public String position;
     public String shipType;
     public String createdAt;
+    public String token;
 
     public User() {
     }
 
-    public User(String userId, String userName, String email, String password, String position, String shipType, String createdAt) {
+    public User(String userId, String userName, String email, String password, String position, String shipType, String token, String createdAt) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
@@ -20,15 +21,7 @@ public class User {
         this.position = position;
         this.shipType = shipType;
         this.createdAt = createdAt;
-    }
-
-    public User(String userId, String userName, String email, String position, String shipType, String createdAt) {
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
-        this.position = position;
-        this.shipType = shipType;
-        this.createdAt = createdAt;
+        this.token = token;
     }
 
     public String getUserId() {
@@ -85,5 +78,13 @@ public class User {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
