@@ -45,10 +45,19 @@
         <p>Hello,<br /></p>
         <p>Please find attachment to this mail a copy of the Section Report.<br /></p>
         <h3>CONFIDENTIAL: This email and any files transmitted with it are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you have received this email in error please notify the system manager.<br /><br /><br /></h3>
-         <p>Regards,<br />Navigator Guide Team<br /></p>
+        <p>Regards,<br />Navigator Guide Team<br /></p>
         ]]>
     </string>
-
+    <string name="txt_email_subject_for_access">Regarding access of %1$s section</string>
+    <string name="txt_email_body_for_access">
+        <![CDATA[
+        <p>Hello Admin,<br /></p>
+        <p>I am writing this email for requesting access of %1$s section. My present Rank is %2$S and Ship Type is %3$s.
+        Please provide me access of %4$s section so we can complete our checklist.<br /></p>
+        <br /><br /><br />
+        <p>Regards,<br />%5$s<br /></p>
+        ]]>
+    </string>
     <!-- strings for dialog -->
     <string name="string_permission_help">Help</string>
     <string name="string_permission_help_text">The permission is missing.\n\nTo grant this permission click on Settings, then Permissions and turn the permission on.\n\nThen click back twice to return to the app</string>

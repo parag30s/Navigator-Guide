@@ -24,15 +24,15 @@ class NotificationRepository{
         appDatabase = AppDatabase.invoke(application!!)
     }
 
-    fun processNotification(notificationModel: NotificationModel?) {
-        Log.d("", "" + notificationModel)
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Main + job)
 
-        GlobalScope.launch(Dispatchers.IO) {
-//            suspendCoroutine<Unit> {
-//            }
-            withContext(Dispatchers.Main) {
-//                val sectionList = appDatabase.getSectionDao().getAllSections()
-            }
+    fun processNotification(notificationModel: NotificationModel?) {
+        Log.d("NotificationRepository", "" + notificationModel)
+
+        scope.launch {
+            val sectionList = appDatabase.getSectionDao().getAllSections()
+            Log.d("NotificationRepository", "sectionList size" + sectionList.size)
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.navigatorsguide.app.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,6 +89,36 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
             val mMessage: TextView? = dialog.findViewById(R.id.bottom_message_text)
             val mButtonYes: Button? = dialog.findViewById(R.id.bottom_yes_button)
             val mButtonNo: Button? = dialog.findViewById(R.id.bottom_no_button)
+
+            mButtonYes?.setOnClickListener {
+                dialog.dismiss()
+                val email = "navguide@gmail.com"
+                val subject = "Regarding access of ${item?.sectionName} section"
+                val body = Html.fromHtml(String.format(getString(R.string.txt_email_body_for_access),
+                    item?.sectionName,
+                    PreferenceManager.getRegistrationInfo(requireActivity())!!.position,
+                    PreferenceManager.getRegistrationInfo(requireActivity())!!.shipType,
+                    item?.sectionName,
+                    PreferenceManager.getRegistrationInfo(requireActivity())!!.userName))
+
+                val selectorIntent = Intent(Intent.ACTION_SENDTO)
+                val urlString =
+                    "mailto:" + Uri.encode(email) + "?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(
+                        body.toString())
+                selectorIntent.data = Uri.parse(urlString)
+
+                val emailIntent = Intent(Intent.ACTION_SEND)
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+                emailIntent.putExtra(Intent.EXTRA_TEXT, body)
+                emailIntent.selector = selectorIntent
+
+                startActivity(Intent.createChooser(emailIntent, "Send email"))
+            }
+
+            mButtonNo?.setOnClickListener {
+                dialog.dismiss()
+            }
 
             mTitle?.text = "Unlock section!"
             mMessage?.text = getString(R.string.err_msg_content_locked)

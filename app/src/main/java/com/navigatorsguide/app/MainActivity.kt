@@ -20,6 +20,7 @@ import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.model.User
 import com.navigatorsguide.app.utils.AppConstants
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -66,8 +67,20 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val token = task.result?.token
-                mDatabaseReference!!.child(user!!.userId).child(AppConstants.USER_TOKEN).setValue(token)
+                mDatabaseReference!!.child(user!!.userId).child(AppConstants.USER_TOKEN).setValue(
+                    token)
             })
+
+        val intent = intent
+        if (intent != null && intent.extras != null) {
+            val extras = intent.extras
+            val id = extras!!.getString("id")
+            val value = extras!!.getString("value")
+            val action = extras!!.getString("action")
+            Log.d("NotificationRepository", "id $id")
+            Log.d("NotificationRepository", "value $value")
+            Log.d("NotificationRepository", "action $action")
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

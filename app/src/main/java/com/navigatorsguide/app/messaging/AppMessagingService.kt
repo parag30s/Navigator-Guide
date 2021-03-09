@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -20,7 +21,12 @@ class AppMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        if (remoteMessage.notification != null) {
+        if (remoteMessage.data != null) {
+            Log.d("NotificationRepository", "" + remoteMessage.data)
+            Log.d("NotificationRepository", "id " + remoteMessage.data.get("id"))
+            Log.d("NotificationRepository", "value " + remoteMessage.data.get("value"))
+            Log.d("NotificationRepository", "action " + remoteMessage.data.get("action"))
+
             val notificationRepository: NotificationRepository =
                 NotificationRepository.getInstance()
             notificationRepository.init(this.application)
