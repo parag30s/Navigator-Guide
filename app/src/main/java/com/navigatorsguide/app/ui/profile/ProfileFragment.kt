@@ -1,4 +1,4 @@
-package com.navigatorsguide.app.ui.gallery
+package com.navigatorsguide.app.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -10,8 +10,10 @@ import java.io.ByteArrayOutputStream
 object ImageBitmapUtils {
 
     fun convertBitmapToString(bitmap: Bitmap): String? {
+        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 960, 730, false)
+
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }

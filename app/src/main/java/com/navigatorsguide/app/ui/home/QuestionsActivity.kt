@@ -166,6 +166,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
                     .getQuestionsDao().updateRadioSelection(qid.toInt(), selection)
             }
         }
+        adapter?.notifyDataSetChanged()
     }
 
     fun getUserQuestionResponse(qid: Int): List<Questions> {
@@ -191,6 +192,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
                     .getQuestionsDao().updateComment(qid.toInt(), comment)
             }
         }
+        adapter?.notifyDataSetChanged()
     }
 
     fun addAttachments(qid: Int?) {
@@ -260,6 +262,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
                 saveImageinDB(tempQid, imageSource)
             }
         }
+        adapter?.notifyDataSetChanged()
     }
 
     fun saveImageinDB(qid: Int, image: String) {

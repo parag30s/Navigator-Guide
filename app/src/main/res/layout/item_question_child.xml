@@ -80,6 +80,18 @@
 
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/answer_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10"
+            android:background="@drawable/edittext_background"
+            android:drawablePadding="@dimen/dimen_10"
+            android:hint="Enter your Answer"
+            android:padding="@dimen/dimen_12"
+            android:textColor="@color/colorTextDark"
+            android:textSize="@dimen/text_15" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_2"

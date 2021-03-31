@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/bottom_dialog_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:layout_marginTop="@dimen/dimen_20"
+        android:layout_marginEnd="@dimen/dimen_10"
+        android:layout_marginBottom="@dimen/dimen_20"
+        android:textSize="@dimen/text_17"
+        android:hint="Enter your answer"
+        android:background="@drawable/drawable_radio_button"
+        android:inputType="textMultiLine|text"
+        android:minHeight="@dimen/dimen_70"
+        android:padding="@dimen/dimen_8" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_2"
+        android:background="#e6e6e6" />
+
+    <Button
+        android:id="@+id/bottom_yes_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50"
+        android:background="@null"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_16"
+        android:text="@string/txt_save"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_2"
+        android:background="#e6e6e6" />
+
+    <Button
+        android:id="@+id/bottom_no_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50"
+        android:background="@null"
+        android:text="@string/txt_cancel"
+        android:textAllCaps="false"
+        android:textColor="#888888"
+        android:textSize="@dimen/text_16"
+        android:textStyle="bold" />
+
+</LinearLayout>

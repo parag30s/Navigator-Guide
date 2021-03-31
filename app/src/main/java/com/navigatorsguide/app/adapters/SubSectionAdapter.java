@@ -43,7 +43,7 @@ public class SubSectionAdapter extends RecyclerView.Adapter<SubSectionAdapter.Su
     @Override
     public void onBindViewHolder(@NonNull SubSectionHolder holder, int position) {
         holder.mTextView.setText(mList.get(position).getSubsname());
-        if (mList.get(position).getStatus() == 1) {
+        if (mList.get(position).getStatus() != null && mList.get(position).getStatus() == 1) {
             holder.mStatus.setImageResource(R.drawable.ic_section_complete);
         } else {
             holder.mStatus.setImageResource(R.drawable.ic_section_incomplete);

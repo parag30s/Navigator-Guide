@@ -1,6 +1,8 @@
 package com.navigatorsguide.app.utils
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -160,6 +162,19 @@ class AppUtils {
             drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
             drawable.draw(canvas)
             return bitmap
+        }
+
+        fun getActivity(context: Context?): Activity? {
+            if (context == null) {
+                return null
+            } else if (context is ContextWrapper) {
+                return if (context is Activity) {
+                    context
+                } else {
+                    getActivity(context.baseContext)
+                }
+            }
+            return null
         }
     }
 }

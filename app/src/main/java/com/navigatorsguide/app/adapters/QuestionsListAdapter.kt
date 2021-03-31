@@ -1,6 +1,5 @@
 package com.navigatorsguide.app.adapters
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -14,6 +13,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.navigatorsguide.app.R
 import com.navigatorsguide.app.database.entities.Questions
 import com.navigatorsguide.app.ui.home.QuestionsActivity
@@ -64,6 +64,7 @@ class QuestionsListAdapter internal constructor(
         val radioYa = convertView!!.findViewById<RadioButton>(R.id.radio_yes_button)
         val radioNo = convertView!!.findViewById<RadioButton>(R.id.radio_no_button)
         val radioNa = convertView!!.findViewById<RadioButton>(R.id.radio_na_button)
+        val answerTextView = convertView!!.findViewById<TextView>(R.id.answer_text_view)
         val commentTextView = convertView!!.findViewById<TextView>(R.id.comment_text_view)
         val descriptionTextView = convertView!!.findViewById<TextView>(R.id.description_textview)
         val linkTextView = convertView!!.findViewById<TextView>(R.id.link_textview)
@@ -74,6 +75,23 @@ class QuestionsListAdapter internal constructor(
         radioGroupButton.contentDescription = questionModel.qid.toString()
         radioGroupButton.clearCheck()
 
+        val mAnswer: String? =
+            (context as QuestionsActivity).getUserQuestionResponse(questionModel.qid)[0].answer
+        if (!mAnswer.isNullOrEmpty()) {
+            if (questionModel.ansType?.contentEquals(AppConstants.TYPE_TEXT_FIELD)!!) {
+                answerTextView.text = mAnswer
+            } else {
+                when (mAnswer) {
+                    context.getString(R.string.txt_ya) -> radioYa.isChecked = true
+                    context.getString(R.string.txt_no) -> radioNo.isChecked = true
+                    context.getString(R.string.txt_na) -> radioNa.isChecked = true
+                }
+            }
+        } else if (questionModel.ansType?.contentEquals(AppConstants.TYPE_TEXT_FIELD)!!) {
+            answerTextView.text = ""
+        }
+
+
         val mComment: String? =
             (context as QuestionsActivity).getUserQuestionResponse(questionModel.qid)[0].comment
         if (!mComment.isNullOrEmpty()) {
@@ -82,28 +100,23 @@ class QuestionsListAdapter internal constructor(
             commentTextView.text = null
         }
 
-        if (questionModel.ansType.equals(AppConstants.SELECTABLE_CONTENT)) {
+        if (questionModel.ansType.equals(AppConstants.TYPE_RADIO_FIELD)) {
             radioGroupButton.visibility = VISIBLE
-        } else {
+            answerTextView.visibility = GONE
+        } else if (questionModel.ansType.equals(AppConstants.TYPE_TEXT_FIELD)) {
             radioGroupButton.visibility = GONE
+            answerTextView.visibility = VISIBLE
         }
 
-        if (questionModel.attachment != null) {
-            val bitmap: Bitmap = ImageBitmapUtils.convertStringToBitmap(questionModel.attachment!!)
+        val attachment: ByteArray? =
+            (context as QuestionsActivity).getUserQuestionResponse(questionModel.qid)[0].attachment
+        if (attachment != null) {
+            val bitmap: Bitmap = ImageBitmapUtils.convertStringToBitmap(attachment!!)
             attachmentImageView.setImageBitmap(bitmap)
             attachmentTextView.text = "View Attachment"
         } else {
             attachmentImageView.setImageResource(R.drawable.ic_baseline_attach_file)
             attachmentTextView.text = "Browse Attachment"
-        }
-
-        if (!questionModel.answer.isNullOrEmpty()) {
-            when ((context as QuestionsActivity).getUserQuestionResponse(questionModel.qid)
-                .get(0).answer) {
-                context.getString(R.string.txt_ya) -> radioYa.isChecked = true
-                context.getString(R.string.txt_no) -> radioNo.isChecked = true
-                context.getString(R.string.txt_na) -> radioNa.isChecked = true
-            }
         }
 
         if (!questionModel.description.isNullOrEmpty()) {
@@ -130,11 +143,12 @@ class QuestionsListAdapter internal constructor(
             AppUtils.showWebViewDialog(context, questionModel.link!!)
         }
 
+        answerTextView.setOnClickListener {
+            openTextInputDialog(questionModel.qid.toString(), mAnswer, 0)
+        }
+
         commentTextView.setOnClickListener {
-            openCommentsDialog(
-                questionModel.qid.toString(),
-                mComment.toString()
-            )
+            openTextInputDialog(questionModel.qid.toString(), mComment, 1)
         }
 
         attachmentTextView.setOnClickListener {
@@ -207,31 +221,40 @@ class QuestionsListAdapter internal constructor(
         }
     }
 
-    private fun openCommentsDialog(qid: String, comment: String) {
-        val dialogBuilder: AlertDialog = AlertDialog.Builder(context).create()
-        val inflater: LayoutInflater = (context as QuestionsActivity).layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_comment_layout, null)
+    private fun openTextInputDialog(qid: String, content: String?, i: Int) {
+        val dialog = BottomSheetDialog(context)
+        val sheetView: View =
+            AppUtils.getActivity(context)?.layoutInflater
+                ?.inflate(R.layout.dialog_text_input_layout, null)!!
+        dialog.setContentView(sheetView)
 
-        val title = dialogView.findViewById<View>(R.id.dialog_title) as TextView
-        val message = dialogView.findViewById<View>(R.id.dialog_message) as EditText
-        val save = dialogView.findViewById<View>(R.id.buttonSubmit) as Button
-        val cancel = dialogView.findViewById<View>(R.id.buttonCancel) as Button
+        var mContent: EditText? = dialog.findViewById(R.id.bottom_dialog_input)
+        val mButtonYes: Button? = dialog.findViewById(R.id.bottom_yes_button)
+        val mButtonNo: Button? = dialog.findViewById(R.id.bottom_no_button)
 
-        if (comment.isEmpty()) {
-            title.text = context.getString(R.string.txt_add_comment)
-        } else {
-            title.text = context.getString(R.string.txt_edit_comment)
+        mContent?.setText(content)
+
+        mButtonYes?.setOnClickListener {
+            when (i) {
+                0 -> {
+                    (context as QuestionsActivity).updateQuestionResponse(
+                        qid,
+                        mContent?.text.toString()
+                    )
+                }
+                1 -> {
+                    mListener.onCommentPostItemClick(
+                        qid, mContent?.text.toString()
+                    )
+                }
+            }
+            dialog.dismiss()
         }
-        message.setText(comment)
 
-        cancel.setOnClickListener { dialogBuilder.dismiss() }
-        save.setOnClickListener {
-            mListener.onCommentPostItemClick(
-                qid, message.text.toString()
-            )
-            dialogBuilder.dismiss()
+        mButtonNo?.setOnClickListener {
+            dialog.dismiss()
         }
-        dialogBuilder.setView(dialogView)
-        dialogBuilder.show()
+
+        dialog.show()
     }
 }

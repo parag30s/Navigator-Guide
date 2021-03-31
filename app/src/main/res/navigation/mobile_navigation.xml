@@ -13,19 +13,19 @@
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.navigatorsguide.app.ui.gallery.ProfileFragment"
+        android:name="com.navigatorsguide.app.ui.profile.ProfileFragment"
         android:label="@string/menu_nav_2"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_report"
         android:name="com.navigatorsguide.app.ui.report.ReportBuilderFragment"
-        android:label="@string/app_name"
+        android:label="@string/menu_nav_3"
         tools:layout="@layout/fragment_report_builder" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.navigatorsguide.app.ui.slideshow.SlideshowFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.navigatorsguide.app.ui.contact.ContactUsFragment"
+        android:label="@string/menu_nav_4"
+        tools:layout="@layout/fragment_contactus" />
 </navigation>

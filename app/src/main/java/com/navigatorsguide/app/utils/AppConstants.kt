@@ -14,7 +14,8 @@ class AppConstants {
         public const val SECTION_NOTE = "sectionnote"
         public const val SUBS_ID = "subs_id"
         public const val QID = "qid"
-        public const val SELECTABLE_CONTENT = "tf"
+        public const val TYPE_RADIO_FIELD = "tf"
+        public const val TYPE_TEXT_FIELD = "tx"
         public const val SECTION_INCOMPLETE = 0
         public const val SECTION_COMPLETE = 1
     }
