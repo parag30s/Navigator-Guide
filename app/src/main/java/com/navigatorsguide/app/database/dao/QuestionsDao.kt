@@ -25,7 +25,15 @@ interface QuestionsDao {
     @Query("UPDATE Questions SET attachment= :image WHERE qid =:qid")
     suspend fun updateAttachment(qid: Int, image: String?)
 
+    @Query("UPDATE Questions SET attachment = null WHERE qid =:qid")
+    suspend fun deleteAttachment(qid: Int?)
+
     @Query("SELECT * FROM Questions WHERE qparent IN(:subsId) AND (answer IN('No') OR comment IS NOT NULL OR attachment IS NOT NULL)")
     suspend fun getReportedQuestions(subsId: Int): List<Questions>
 
+    @Query("Update Questions SET answer = null, comment = null, attachment = null, attachmentlink = null WHERE qparent in (Select subsid from subsection where subsparent = :secId)")
+    suspend fun resetSection(secId: Int?)
+
+    @Query("UPDATE Questions SET answer = null, comment = null, attachment = null, attachmentlink = null WHERE qparent =:subId")
+    suspend fun resetSubSection(subId: Int?)
 }

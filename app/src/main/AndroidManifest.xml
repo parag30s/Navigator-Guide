@@ -65,6 +65,9 @@
         <activity
             android:name=".utils.ImagePreviewActivity"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".permission.SecurityActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

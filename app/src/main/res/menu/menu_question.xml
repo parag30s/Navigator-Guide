@@ -9,4 +9,12 @@
         android:iconTint="@color/colorWhite"
         app:showAsAction="always"
         android:title="@null" />
+
+    <item
+        android:id="@+id/action_reset"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_restore_page"
+        android:iconTint="@color/colorWhite"
+        app:showAsAction="always"
+        android:title="@null" />
 </menu>

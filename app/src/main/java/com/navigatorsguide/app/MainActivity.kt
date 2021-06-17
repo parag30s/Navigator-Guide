@@ -20,7 +20,6 @@ import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.model.User
 import com.navigatorsguide.app.utils.AppConstants
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -39,7 +38,11 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_report, R.id.nav_slideshow
+                R.id.nav_home,
+                R.id.nav_profile,
+                R.id.nav_inspection,
+                R.id.nav_report,
+                R.id.nav_contactus
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

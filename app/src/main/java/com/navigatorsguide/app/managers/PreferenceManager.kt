@@ -1,6 +1,7 @@
 package com.navigatorsguide.app.managers
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import com.navigatorsguide.app.model.User
 import com.navigatorsguide.app.utils.Security
 
@@ -15,6 +16,8 @@ class PreferenceManager {
         private const val PASSWORD = "password"
         private const val POSITION = "position"
         private const val SHIP_TYPE = "shipType"
+        private const val SHIP_NAME = "shipName"
+        private const val PROFILE_IMAGE = "profileImage"
         private const val TOKEN = "token"
         private const val CREATED_AT = "createdAt"
         private const val POSITION_ID = "positionId"
@@ -104,6 +107,34 @@ class PreferenceManager {
             val editor = sharedPref.edit()
             editor.putInt(POSITION_ID, positionId)
             editor.apply()
+        }
+
+        fun saveShipName(context: Context, shipName: String) {
+            val sharedPref =
+                context.getSharedPreferences(REGISTRATION_PREFERENCES, Context.MODE_PRIVATE)
+            val editor = sharedPref.edit()
+            editor.putString(SHIP_NAME, shipName)
+            editor.apply()
+        }
+
+        fun getShipName(context: Context): String? {
+            val sharedPref =
+                context.getSharedPreferences(REGISTRATION_PREFERENCES, Context.MODE_PRIVATE)
+            return sharedPref.getString(SHIP_NAME, null)
+        }
+
+        fun saveProfileImage(context: Context, profileImage: String) {
+            val sharedPref =
+                context.getSharedPreferences(REGISTRATION_PREFERENCES, Context.MODE_PRIVATE)
+            val editor = sharedPref.edit()
+            editor.putString(PROFILE_IMAGE, profileImage)
+            editor.apply()
+        }
+
+        fun getProfileImage(context: Context): String? {
+            val sharedPref =
+                context.getSharedPreferences(REGISTRATION_PREFERENCES, Context.MODE_PRIVATE)
+            return sharedPref.getString(PROFILE_IMAGE, null)
         }
 
         fun deleteRegistartionInfo(context: Context) {

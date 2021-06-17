@@ -13,28 +13,36 @@
         app:ms_background_color="@color/colorTextInput"
         app:ms_hide_arrow="false" />
 
+
     <Button
         android:id="@+id/create_report_button"
         style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dimen_200"
         android:layout_height="@dimen/button_height"
-        android:layout_below="@id/spinner"
+        android:layout_marginTop="@dimen/dimen_30"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:text="Build Report"
+        android:layout_below="@id/spinner"
+        android:text="Share Report"
         android:textSize="@dimen/text_14" />
+
+    <TextView
+        android:id="@+id/view_report_label"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_below="@+id/create_report_button"
+        android:layout_marginTop="@dimen/dimen_30"
+        android:gravity="top|center_horizontal"
+        android:text="@string/view_report_text"
+        android:textSize="@dimen/text_16" />
 
     <TextView
         android:id="@+id/empty_report_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_16"
+        android:layout_centerInParent="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:gravity="center"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:text="@string/txt_empty_report" />
+        android:text="@string/txt_empty_report"
+        android:textSize="@dimen/text_16"
+        android:visibility="gone" />
 </RelativeLayout>

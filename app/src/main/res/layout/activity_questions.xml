@@ -8,7 +8,7 @@
         android:id="@+id/questions_exp_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dimen_10"
+        android:layout_above="@id/hidden_footer_view"
         android:divider="@null"
         android:groupIndicator="@null" />
 
@@ -20,7 +20,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/dimen_15"
+        android:layout_margin="@dimen/dimen_12"
         android:contentDescription="@string/appbar_scrolling_view_behavior"
         android:drawableStart="@drawable/ic_baseline_send"
         android:drawableLeft="@drawable/ic_baseline_send"
@@ -39,4 +39,10 @@
         android:textSize="@dimen/text_16"
         android:visibility="gone" />
 
+    <View
+        android:id="@+id/hidden_footer_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_70"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 </RelativeLayout>

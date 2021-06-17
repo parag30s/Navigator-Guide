@@ -82,4 +82,22 @@
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/colorBlack</item>
     </style>
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="BottomSheetItem">
+        <item name="android:textSize">18sp</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">15dp</item>
+        <item name="fontFamily">@font/futurastdmedium</item>
+    </style>
 </resources>

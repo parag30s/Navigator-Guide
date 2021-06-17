@@ -22,26 +22,46 @@
                 android:foreground="#cc23283a"
                 android:src="@drawable/ic_pattern_bg" />
 
-            <TextView
-                android:id="@+id/name_thumb_text_view"
-                android:layout_width="@dimen/dimen_50"
-                android:layout_height="@dimen/dimen_50"
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/dimen_20"
-                android:layout_marginLeft="@dimen/dimen_20"
-                android:background="@drawable/drawable_name_thumbnail_bg"
-                android:gravity="center"
-                android:maxLength="2"
-                android:textAllCaps="true"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_24" />
+                android:layout_marginLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:id="@+id/name_thumb_text_view"
+                    android:layout_width="@dimen/dimen_60"
+                    android:layout_height="@dimen/dimen_60"
+                    android:background="@drawable/drawable_name_thumbnail_bg"
+                    android:gravity="center"
+                    android:maxLength="2"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_24" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_thumb_view"
+                    android:layout_width="@dimen/dimen_60"
+                    android:layout_height="@dimen/dimen_60" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:layout_gravity="end|top"
+                    android:background="@drawable/drawable_name_thumbnail_bg"
+                    android:backgroundTint="@color/colorWhite"
+                    android:padding="@dimen/dimen_2"
+                    android:src="@drawable/ic_baseline_edit"
+                    app:tint="@color/colorBlack" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/dimen_90"
-                android:layout_marginLeft="@dimen/dimen_90"
+                android:layout_marginStart="@dimen/dimen_100"
+                android:layout_marginLeft="@dimen/dimen_100"
                 android:orientation="vertical">
 
                 <TextView

@@ -4,7 +4,10 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +31,7 @@ import com.navigatorsguide.app.BuildConfig
 import com.navigatorsguide.app.R
 import com.navigatorsguide.app.database.AppDatabase
 import com.navigatorsguide.app.database.entities.Questions
+import com.navigatorsguide.app.database.entities.Section
 import com.navigatorsguide.app.database.entities.SubSection
 import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.model.User
@@ -40,6 +44,7 @@ import java.io.FileOutputStream
 class ReportBuilderFragment : BaseFragment() {
     lateinit var sectionSpinner: MaterialSpinner
     lateinit var buildReport: Button
+    lateinit var viewReport: TextView
     lateinit var emptyView: TextView
     lateinit var subSectionList: List<SubSection>
     private var questionList: List<Questions> = listOf()
@@ -50,8 +55,10 @@ class ReportBuilderFragment : BaseFragment() {
     private lateinit var mShipType: String
     private lateinit var mRisk: String
     private lateinit var mDate: String
+    private lateinit var sectionName: String
+    private var isViewOnly = false
 
-    val PADDING_EDGE = 40f
+    private val PADDING_EDGE = 40f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,8 +68,14 @@ class ReportBuilderFragment : BaseFragment() {
         val root = inflater.inflate(R.layout.fragment_report_builder, container, false)
         sectionSpinner = root.findViewById(R.id.spinner)
         buildReport = root.findViewById(R.id.create_report_button)
+        viewReport = root.findViewById(R.id.view_report_label)
         emptyView = root.findViewById(R.id.empty_report_text_view)
         buildReport.setOnClickListener {
+            isViewOnly = false
+            onBuildReport()
+        }
+        viewReport.setOnClickListener {
+            isViewOnly = true
             onBuildReport()
         }
         init()
@@ -83,6 +96,7 @@ class ReportBuilderFragment : BaseFragment() {
         } else {
             sectionSpinner.visibility = View.GONE
             buildReport.visibility = View.GONE
+            viewReport.visibility = View.GONE
             emptyView.visibility = View.VISIBLE
         }
     }
@@ -120,18 +134,7 @@ class ReportBuilderFragment : BaseFragment() {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
 
                     if (report.areAllPermissionsGranted()) {
-                        val subSection: SubSection? =
-                            subSectionList.find { it.subsname == sectionSpinner.text }
-                        mRisk = AppUtils.getRiskValue(subSection?.risk!!).toString()
-                        mDate = subSection?.closureDate.toString()
-
-                        launch {
-                            withContext(Dispatchers.Default) {
-                                questionList = AppDatabase.invoke(requireActivity())
-                                    .getQuestionsDao().getReportedQuestions(subSection?.subsid!!)
-                            }
-                            buildReport(sectionSpinner.text as String)
-                        }
+                        gatherReportData()
                     } else {
                         Toast.makeText(requireActivity(),
                             "permissions missing :(",
@@ -148,27 +151,60 @@ class ReportBuilderFragment : BaseFragment() {
             }).check()
     }
 
-    private fun buildReport(sectionName: String) {
+    private fun gatherReportData() {
+        val subSection: SubSection? =
+            subSectionList.find { it.subsname == sectionSpinner.text }
+        mRisk = AppUtils.getRiskValue(subSection?.risk!!).toString()
+        mDate = subSection.closureDate.toString()
+
+        launch {
+            withContext(Dispatchers.Default) {
+                questionList = AppDatabase.invoke(requireActivity())
+                    .getQuestionsDao().getReportedQuestions(subSection.subsid)
+
+                val section: Section? =
+                    AppDatabase.invoke(requireActivity()).getSectionDao()
+                        .getSectionInfo(subSection.subsparent)
+                if (section != null) {
+                    sectionName = section.sectionName.toString()
+                    buildReport(sectionName, sectionSpinner.text as String)
+                } else {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(context,
+                            context?.getString(R.string.err_msg_res_failed),
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun buildReport(sectionName: String, subSectionName: String) {
         val document = Document(PageSize.A4, 0f, 0f, 0f, 0f)
         val outPath =
-            requireActivity().getExternalFilesDir(null).toString() + "/NG_PDF_REPORT.pdf"
+            requireActivity().getExternalFilesDir(null)
+                .toString() + "/${PreferenceManager.getShipName(requireActivity())} - $subSectionName Report.pdf"
         Log.d("loc", outPath)
         val writer = PdfWriter.getInstance(document, FileOutputStream(outPath))
         document.open()
 
-        ReportUtils.addBrandLogoHeader(requireActivity(), document)
-        ReportUtils.addReportDetails(document,
+        ReportUtils.addBrandLogoHeader(requireActivity(),
+            document,
+            PreferenceManager.getShipName(requireActivity()))
+        ReportUtils.addReportDetails(requireActivity(), document,
             mName,
             mEmail,
             mRank,
             mShipType,
             mRisk,
-            mDate)
+            mDate,
+            sectionName,
+            subSectionName)
 
         document.setMargins(0f, 0f, PADDING_EDGE, PADDING_EDGE)
 
         ReportUtils.addBlankCell(document)
-        ReportUtils.addReportHeader(document, sectionName)
+        ReportUtils.addReportHeader(document, subSectionName)
         ReportUtils.addLineSeparators(document)
         ReportUtils.addQuestionsData(document, questionList)
         document.close()
@@ -179,18 +215,34 @@ class ReportBuilderFragment : BaseFragment() {
             BuildConfig.APPLICATION_ID + ".provider",
             file
         )
-        try {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.putExtra(Intent.EXTRA_STREAM, path)
-            shareIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            shareIntent.type = "application/pdf"
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT,
-                "Navigator Guide - $sectionName Report");
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                Html.fromHtml(getString(R.string.txt_email_body)));
-            startActivity(Intent.createChooser(shareIntent, "share.."))
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(requireActivity(), "There is no sharing app.", Toast.LENGTH_LONG).show()
+        if (isViewOnly) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(path)
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivity(intent)
+            } else {
+                var intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(path, "application/pdf")
+                intent = Intent.createChooser(intent, "Open File")
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+        } else {
+            try {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.putExtra(Intent.EXTRA_STREAM, path)
+                shareIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                shareIntent.type = "application/pdf"
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+                    "Navigator Guide - $subSectionName Report");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    Html.fromHtml(getString(R.string.txt_email_body)));
+                startActivity(Intent.createChooser(shareIntent, "share.."))
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(requireActivity(), "There is no sharing app.", Toast.LENGTH_LONG)
+                    .show()
+            }
         }
     }
 }

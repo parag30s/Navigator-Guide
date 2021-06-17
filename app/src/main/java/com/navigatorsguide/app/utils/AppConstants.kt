@@ -16,7 +16,17 @@ class AppConstants {
         public const val QID = "qid"
         public const val TYPE_RADIO_FIELD = "tf"
         public const val TYPE_TEXT_FIELD = "tx"
+        public const val TYPE_DATE_PICKER = "dp"
         public const val SECTION_INCOMPLETE = 0
         public const val SECTION_COMPLETE = 1
+
+        public const val FILE_PDF = "application/pdf"
+        public const val FILE_SHEET = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        public const val FILE_EXCEL = "application/vnd.ms-excel"
+        public const val FILE_DOC = "application/vnd.google-apps.document"
+        public const val FILE_SPREADSHEET = "application/vnd.google-apps.spreadsheet"
+        public const val FILE_WORD = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        public const val FILE_AUDIO = "audio/mpeg"
+        public const val FILE_IMAGE = "image/jpeg"
     }
 }

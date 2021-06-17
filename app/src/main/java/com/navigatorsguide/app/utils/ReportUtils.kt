@@ -1,8 +1,8 @@
 package com.navigatorsguide.app.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.fragment.app.FragmentActivity
 import com.itextpdf.text.*
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.pdf.BaseFont
@@ -18,27 +18,45 @@ import java.io.ByteArrayOutputStream
 class ReportUtils {
     companion object {
 
-        @SuppressLint("UseCompatLoadingForDrawables")
-        fun addBrandLogoHeader(context: Context, document: Document) {
-            val drawable = context.resources.getDrawable(R.drawable.ic_banner_foreground)
-            val bitmap = ImageBitmapUtils.convertDrawableToBitmap(drawable)
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val logo: Image = Image.getInstance(stream.toByteArray())
+        fun addBrandLogoHeader(context: Context, document: Document, shipName: String?) {
+            var basfontRegular: BaseFont =
+                BaseFont.createFont("assets/fonts/Helvetica.otf", "UTF-8", BaseFont.EMBEDDED)
+            var appFontRegular = Font(basfontRegular, 20.0F, Font.NORMAL, BaseColor.WHITE)
 
-            val logoTable = PdfPTable(1)
-            logoTable.widthPercentage = 100F
-            val iconCell = PdfPCell(logo, true)
-            iconCell.backgroundColor = BaseColor(13, 81, 152)
-            iconCell.horizontalAlignment = Element.ALIGN_CENTER
-            iconCell.fixedHeight = 100f
-            iconCell.paddingRight = 50f
-            iconCell.border = PdfPCell.NO_BORDER
-            logoTable.addCell(iconCell)
-            document.add(logoTable)
+            val headerTable = PdfPTable(1)
+            headerTable.setWidths(
+                floatArrayOf(1f)
+            )
+            headerTable.isLockedWidth = true
+            headerTable.totalWidth = PageSize.A4.width // set content width to fill document
+
+            val contactTable =
+                PdfPTable(1) // new vertical table for contact details
+            val phoneCell =
+                PdfPCell(
+                    Paragraph(
+                        shipName,
+                        appFontRegular
+                    )
+                )
+            phoneCell.border = Rectangle.NO_BORDER
+            phoneCell.paddingTop = 30f
+            phoneCell.paddingBottom = 30f
+            phoneCell.horizontalAlignment = Element.ALIGN_CENTER
+
+            contactTable.addCell(phoneCell)
+
+            val headCell = PdfPCell(contactTable)
+            headCell.border = Rectangle.NO_BORDER
+            headCell.horizontalAlignment = Element.ALIGN_CENTER
+            headCell.verticalAlignment = Element.ALIGN_MIDDLE
+            headCell.backgroundColor = BaseColor(13, 81, 152)
+            headerTable.addCell(headCell)
+            document.add(headerTable)
         }
 
         fun addReportDetails(
+            context: FragmentActivity,
             document: Document,
             name: String,
             email: String,
@@ -46,6 +64,8 @@ class ReportUtils {
             shipType: String,
             risk: String,
             date: String,
+            section: String,
+            subSection: String,
         ) {
             val reportTable = PdfPTable(3)
             reportTable.widthPercentage = 100f
@@ -58,7 +78,18 @@ class ReportUtils {
             reportTable.addCell(getCell("Rank: $rank",
                 PdfPCell.ALIGN_LEFT,
                 BaseColor(13, 81, 152)))
+
+            reportTable.addCell(getCell("Section: $section",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(13, 81, 152)))
+            reportTable.addCell(getCell("Subsection: $subSection",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(13, 81, 152)))
             reportTable.addCell(getCell("Ship Type: $shipType",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(13, 81, 152)))
+
+            reportTable.addCell(getCell("Build By: ${context.getString(R.string.app_name)}",
                 PdfPCell.ALIGN_LEFT,
                 BaseColor(13, 81, 152)))
             reportTable.addCell(getCell("Risk: $risk",

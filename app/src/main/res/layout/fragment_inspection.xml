@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/fragment_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/fragment_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:contentInsetStart="0dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="@dimen/dimen_10"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:padding="@dimen/dimen_7"
+                android:src="@drawable/ic_baseline_arrow_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="@dimen/dimen_25"
+                android:layout_marginLeft="@dimen/dimen_25"
+                android:text="@string/menu_nav_3"
+                android:textColor="#fff"
+                android:textSize="22sp" />
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorDiv"
+            android:foreground="#cc23283a"
+            android:src="@drawable/ic_pattern_bg" />
+
+        <TextView
+            android:id="@+id/name_thumb_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/dimen_20"
+            android:text="You must update Ship type and Ship name on which you are currently inspecting. These details will be also used in inspection report generation."
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_18" />
+
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/shiptype_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down"
+        android:drawableRight="@drawable/ic_baseline_arrow_drop_down"
+        android:enabled="true"
+        android:focusable="false"
+        android:hint="Ship Type"
+        android:inputType="none"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <EditText
+        android:id="@+id/shipname_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@drawable/edittext_background"
+        android:cursorVisible="false"
+        android:hint="Ship Name"
+        android:paddingStart="@dimen/dimen_20"
+        android:paddingEnd="@dimen/dimen_20" />
+
+    <Button
+        android:id="@+id/submit_button"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:layout_below="@id/password_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/dimen_40"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="Submit"
+        android:textSize="@dimen/text_14" />
+</androidx.appcompat.widget.LinearLayoutCompat>

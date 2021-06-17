@@ -19,4 +19,5 @@ data class SubSection(
     @NonNull var comments: String?,
     @NonNull var risk: Int?,
     @NonNull var status: Int?,
-    @NonNull var note: String?)
+    @NonNull var note: String?,
+    @NonNull var attachment_link: String?)

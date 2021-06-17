@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -102,7 +103,7 @@
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:background="@drawable/edittext_background"
-                    android:hint="Observations (If any)"
+                    android:hint="Observations"
                     android:inputType="textMultiLine"
                     android:maxHeight="90dp"
                     android:minHeight="45dp"
@@ -192,23 +193,48 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:padding="@dimen/dimen_5"
-                    android:text="Upload supporting files, if any (Max Size 2 MB)"
+                    android:text="Upload supporting files (Documents, Images, Audio files, etc.)"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_16" />
 
-                <EditText
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/edittext_background"
-                    android:hint="Browse Files"
-                    android:inputType="textMultiLine"
-                    android:maxHeight="90dp"
-                    android:minHeight="45dp"
-                    android:paddingStart="@dimen/dimen_20"
-                    android:paddingEnd="@dimen/dimen_20"
-                    android:textSize="@dimen/text_16" />
+                    android:background="@drawable/edittext_background">
+
+                    <EditText
+                        android:id="@+id/browse_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:enabled="true"
+                        android:focusable="false"
+                        android:hint="Browse Files"
+                        android:inputType="text"
+                        android:maxHeight="90dp"
+                        android:minHeight="45dp"
+                        android:paddingStart="@dimen/dimen_20"
+                        android:paddingLeft="@dimen/dimen_20"
+                        android:paddingEnd="@dimen/dimen_50"
+                        android:paddingRight="@dimen/dimen_50"
+                        android:textSize="@dimen/text_16" />
+
+                    <ImageButton
+                        android:id="@+id/delete_file_button"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:background="@color/fui_transparent"
+                        android:onClick="onFileDelete"
+                        android:padding="@dimen/dimen_2"
+                        android:src="@drawable/ic_baseline_delete"
+                        android:visibility="gone" />
+                </FrameLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
@@ -252,6 +278,7 @@
                 android:onClick="onSubmission"
                 android:text="Submit"
                 android:textSize="@dimen/text_14" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

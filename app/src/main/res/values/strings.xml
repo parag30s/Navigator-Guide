@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Navigators Guide</string>
+    <string name="app_name">Guide2Inspections</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -7,8 +7,9 @@
 
     <string name="menu_nav_1">Dashboard</string>
     <string name="menu_nav_2">Profile</string>
-    <string name="menu_nav_3">Generate Report</string>
-    <string name="menu_nav_4">Contact Us</string>
+    <string name="menu_nav_3">Current Inspection</string>
+    <string name="menu_nav_4">Generate Report</string>
+    <string name="menu_nav_5">Contact Us</string>
 
     <string name="the_concept">How we conceptualize a ship inspection-preparation is much different from conventional methods. We work with companies, training institutes or Pre-Vetting Inspectors to develop their inspection processes and improve results. There’s a ton of Free stuff for seafarers.\nTo know how we do it, and the many benefits involved, view a demo, or contact us. We shall be happy to personalize a demo exclusively for you!</string>
     <string name="login_footer_text">You are not a member? <font color='#F23B5F'>Register</font>.</string>
@@ -24,8 +25,9 @@
     <string name="err_msg_password_length">Password must be at least 8 characters long</string>
     <string name="err_msg_position">Select your Position</string>
     <string name="err_msg_shiptype">Select your Ship Type</string>
-    <string name="err_msg_res_failed">Something went wrong. Please try again.</string>
-    <string name="err_msg_content_locked">You are not allowed to access this section. If you wish to access please contact to Administrator.</string>
+    <string name="err_msg_res_failed">Something went wrong. Please try again later.</string>
+    <string name="err_msg_format_error">File format does not supported.</string>
+    <string name="err_msg_ship_name">Enter ship name</string>
 
     <string name="txt_ya">Yes</string>
     <string name="txt_no">No</string>
@@ -38,8 +40,9 @@
     <string name="txt_cancel">Cancel</string>
     <string name="txt_add_comment">Add Comment</string>
     <string name="txt_edit_comment">Edit Comment</string>
-    <string name="txt_link">For Details Click Here</string>
+    <string name="txt_link">Click to view example</string>
     <string name="txt_empty_report">You need to complete any section before generating a report for that.</string>
+    <string name="view_report_text">Wish to view this report? <font color='#F23B5F'>View</font>.</string>
     <string name="txt_email_body">
         <![CDATA[
         <p>Hello,<br /></p>
@@ -52,10 +55,10 @@
     <string name="txt_email_body_for_access">
         <![CDATA[
         <p>Hello Admin,<br /></p>
-        <p>I am writing this email for requesting access of %1$s section. My present Rank is %2$S and Ship Type is %3$s.
-        Please provide me access of %4$s section so we can complete our checklist.<br /></p>
-        <br /><br /><br />
-        <p>Regards,<br />%5$s<br /></p>
+        <p>I am writing this email for requesting access of %1$s section. I would inspect this section as a %2$S and Ship Type is %3$s.
+        Please provide me access of %4$s section till the %5$s so I can complete the inspection process in the time specified.<br /></p>
+        <br /><br />
+        <p>Regards,<br />%6$s<br /></p>
         ]]>
     </string>
     <!-- strings for dialog -->
@@ -64,4 +67,23 @@
     <string name="string_permission_quit">Exit App</string>
     <string name="string_settings">Settings</string>
     <string name="txt_attention">Attention!</string>
+
+    <string name="txt_reset_title">Reset Records</string>
+    <string name="txt_reset_message">Are you sure you want to reset all inspection records permanently?</string>
+    <string name="txt_reset_yes">Yes, reset</string>
+    <string name="txt_reset_no">No</string>
+
+    <string name="txt_inspection_title">Confirm</string>
+    <string name="txt_inspection_message">Before you proceed, please enter the ship\'s name which you are going to be inspect.</string>
+    <string name="txt_inspecting_message">Before you proceed, let us inform you that you are going to be inspect <font color='#F23B5F'>%1$s</font>.</string>
+    <string name="txt_inspection_yes">Ok, take me there</string>
+    <string name="txt_inspecting_yes">Yes, I know</string>
+    <string name="txt_inspection_no">Not now</string>
+    <string name="txt_inspecting_no">No, lets change</string>
+
+    <string name="txt_access_title">Section Unlock</string>
+    <string name="txt_access_message">You are not allowed to access this section. If you wish to access please select extension date and contact to Administrator.</string>
+    <string name="txt_access_yes">Yes, please</string>
+    <string name="txt_access_no">No</string>
+
 </resources>

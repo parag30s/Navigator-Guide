@@ -2,7 +2,7 @@ package com.navigatorsguide.app.utils
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.view.MenuItem
 import android.widget.ImageView
 import com.navigatorsguide.app.BaseActivity
 import com.navigatorsguide.app.R
@@ -40,5 +40,13 @@ class ImagePreviewActivity : BaseActivity() {
             val bitmap: Bitmap = ImageBitmapUtils.convertStringToBitmap(item.get(0).attachment!!)
             previewImageView.setImageBitmap(bitmap)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
@@ -13,16 +14,29 @@
         android:gravity="center"
         android:textColor="@color/colorTextLight"
         android:textSize="@dimen/text_18"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:fontFamily="@font/futurastdmedium" />
 
     <TextView
         android:id="@+id/bottom_message_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/dimen_12"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:gravity="center"
         android:textColor="@color/colorTextLight"
-        android:textSize="@dimen/text_16" />
+        android:textSize="@dimen/text_16"
+        app:fontFamily="@font/futurastdmedium" />
+
+    <DatePicker
+        android:id="@+id/date_picker_view"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
@@ -38,7 +52,8 @@
         android:textAllCaps="false"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/text_16"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:fontFamily="@font/futurastdmedium" />
 
     <View
         android:layout_width="match_parent"
@@ -53,6 +68,7 @@
         android:textAllCaps="false"
         android:textColor="#888888"
         android:textSize="@dimen/text_16"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:fontFamily="@font/futurastdmedium" />
 
 </LinearLayout>

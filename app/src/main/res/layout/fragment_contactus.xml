@@ -23,38 +23,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dimen_20"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_margin="@dimen/dimen_20"
             android:text="We are here to answer any questions you may have about our services.
 Reach out to us and we will respond as soon as we can."
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_18" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dimen_90"
-            android:layout_marginLeft="@dimen/dimen_90"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/name_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_20" />
-
-            <TextView
-                android:id="@+id/time_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_14" />
-        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/email_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70"
         android:layout_margin="@dimen/activity_horizontal_margin"
@@ -94,7 +72,7 @@ Reach out to us and we will respond as soon as we can."
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="captain@navigatorsguide.com"
+                android:text="captain@thenavigatorsguide.com"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_14" />
 
@@ -102,6 +80,7 @@ Reach out to us and we will respond as soon as we can."
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/phone_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -142,7 +121,7 @@ Reach out to us and we will respond as soon as we can."
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="+91-9886940914 OR +91-9474521345"
+                android:text="+91-9830284868 OR +91-9474521345"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/text_14" />
 
@@ -150,6 +129,7 @@ Reach out to us and we will respond as soon as we can."
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/whats_app_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70"
         android:layout_margin="@dimen/activity_horizontal_margin"
@@ -199,6 +179,7 @@ Reach out to us and we will respond as soon as we can."
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linked_in_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70"
         android:layout_marginStart="@dimen/activity_horizontal_margin"

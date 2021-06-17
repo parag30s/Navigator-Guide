@@ -1,22 +1,19 @@
 package com.navigatorsguide.app.ui.home
 
 import android.Manifest
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ExpandableListView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.navigatorsguide.app.BaseActivity
 import com.navigatorsguide.app.R
@@ -26,9 +23,7 @@ import com.navigatorsguide.app.database.AppDatabase
 import com.navigatorsguide.app.database.entities.Questions
 import com.navigatorsguide.app.database.entities.SubSection
 import com.navigatorsguide.app.managers.PreferenceManager
-import com.navigatorsguide.app.utils.AppConstants
-import com.navigatorsguide.app.utils.AppUtils
-import com.navigatorsguide.app.utils.ImageBitmapUtils
+import com.navigatorsguide.app.utils.*
 import kotlinx.coroutines.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -37,7 +32,7 @@ import java.io.InputStream
 
 
 class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
-    QuestionsListAdapter.OnCommentPostClickListener {
+    QuestionsListAdapter.OnCommentPostClickListener, OptionsBottomSheetFragment.ItemClickListener {
     internal var expandableListView: ExpandableListView? = null
     internal var adapter: QuestionsListAdapter? = null
 
@@ -48,6 +43,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
     lateinit var questionnaireLayout: RelativeLayout
     lateinit var proceedButton: Button
     lateinit var emptyTextView: TextView
+    lateinit var hiddenFooterView: View
 
     var subsId: Int? = null
     var rankId: Int? = null
@@ -75,6 +71,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
         expandableListView = findViewById(R.id.questions_exp_list)
         proceedButton = findViewById(R.id.proceed_button)
         emptyTextView = findViewById(R.id.empty_text_view)
+        hiddenFooterView = findViewById(R.id.hidden_footer_view)
 
         rankId = PreferenceManager.getPositionId(this)
         shipId = PreferenceManager.getShipTypeId(this)
@@ -113,15 +110,32 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.question, menu)
+        inflater.inflate(R.menu.menu_question, menu)
         val videoLink = menu.findItem(R.id.action_video_link)
-        videoLink.isVisible = sectionLink != null
+        videoLink.isVisible = (sectionLink != null && sectionLink!!.isNotEmpty())
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_video_link) {
             AppUtils.showWebViewDialog(this, sectionLink.toString())
+        }
+        if (item.itemId == R.id.action_reset) {
+            val dialog: DialogUtil = DialogUtil(
+                getString(R.string.txt_reset_title),
+                getString(R.string.txt_reset_message),
+                getString(R.string.txt_reset_yes),
+                getString(R.string.txt_reset_no))
+            dialog.setOnDialogClickListener(object : DialogUtil.OnDialogButtonClickListener {
+                override fun onPositiveButtonClicked() {
+                    resetSubSection()
+                }
+
+                override fun onNegativeButtonClicked() {
+
+                }
+            })
+            dialog.show(supportFragmentManager, "dialog")
         }
         return super.onOptionsItemSelected(item)
     }
@@ -148,6 +162,27 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
         expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
             false
         }
+
+        expandableListView!!.setOnScrollListener(object : AbsListView.OnScrollListener {
+
+            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+            }
+
+            override fun onScroll(
+                view: AbsListView?, firstVisibleItem: Int,
+                visibleItemCount: Int, totalItemCount: Int,
+            ) {
+                if (expandableListView!!.lastVisiblePosition ==
+                    expandableListView!!.adapter.count - 1 &&
+                    expandableListView!!.getChildAt(expandableListView!!.childCount - 1)
+                        .bottom <= expandableListView!!.height
+                ) {
+                    hiddenFooterView.visibility = View.VISIBLE
+                } else {
+                    hiddenFooterView.visibility = View.GONE
+                }
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -192,7 +227,9 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
                     .getQuestionsDao().updateComment(qid.toInt(), comment)
             }
         }
-        adapter?.notifyDataSetChanged()
+        Handler(Looper.getMainLooper()).postDelayed({
+            adapter?.notifyDataSetChanged()
+        }, 500)
     }
 
     fun addAttachments(qid: Int?) {
@@ -208,31 +245,28 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
             )
             return
         }
-        val options = resources.getStringArray(R.array.attachment_options)
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Add Attachments..")
-            .setItems(options, DialogInterface.OnClickListener { dialog, which ->
-                when (which) {
-                    0 -> getImageFromGallery()
-                    1 -> capturePictureFromCamera()
-                }
-            })
 
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        supportFragmentManager.let {
+            OptionsBottomSheetFragment.newInstance(Bundle()).apply {
+                show(it, tag)
+            }
+        }
     }
 
-    private fun capturePictureFromCamera() {
-        val cameraIntent = Intent()
-        cameraIntent.action = MediaStore.ACTION_IMAGE_CAPTURE
-        startActivityForResult(cameraIntent, CAMERA_REQUEST)
-    }
-
-    private fun getImageFromGallery() {
-        val intent = Intent()
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.type = "image/*"
-        startActivityForResult(intent, GALLERY_REQUEST)
+    override fun onItemClick(item: String) {
+        when (item) {
+            "FILE" -> {
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = "image/*"
+                startActivityForResult(intent, GALLERY_REQUEST)
+            }
+            "CAMERA" -> {
+                val cameraIntent = Intent()
+                cameraIntent.action = MediaStore.ACTION_IMAGE_CAPTURE
+                startActivityForResult(cameraIntent, CAMERA_REQUEST)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -262,15 +296,42 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
                 saveImageinDB(tempQid, imageSource)
             }
         }
-        adapter?.notifyDataSetChanged()
+        Handler(Looper.getMainLooper()).postDelayed({
+            adapter?.notifyDataSetChanged()
+        }, 500)
     }
 
-    fun saveImageinDB(qid: Int, image: String) {
+    private fun saveImageinDB(qid: Int, image: String) {
         launch {
             withContext(Dispatchers.Default) {
                 AppDatabase.invoke(context = this@QuestionsActivity)
                     .getQuestionsDao().updateAttachment(qid, image)
             }
         }
+    }
+
+    private fun resetSubSection() {
+        launch {
+            withContext(Dispatchers.Default) {
+                AppDatabase.invoke(context = this@QuestionsActivity)
+                    .getQuestionsDao().resetSubSection(subsId)
+
+                AppDatabase.invoke(context = this@QuestionsActivity)
+                    .getSubSectionDao().resetSubSectionStatus(subsId)
+            }
+        }
+        adapter?.notifyDataSetChanged()
+    }
+
+    fun deleteAttachment(qid: Int) {
+        launch {
+            withContext(Dispatchers.Default) {
+                AppDatabase.invoke(context = this@QuestionsActivity)
+                    .getQuestionsDao().deleteAttachment(qid)
+            }
+        }
+        Handler(Looper.getMainLooper()).postDelayed({
+            adapter?.notifyDataSetChanged()
+        }, 500)
     }
 }

@@ -32,10 +32,11 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context, AppDatabase::class.java, "navguide.db")
+        private fun buildDatabase(context: Context): AppDatabase {
+            val builder = Room.databaseBuilder(context, AppDatabase::class.java, "navguide.db")
                 .createFromAsset("database/NavGuide.db")
-                .build()
+            return builder.build()
+        }
     }
 
     abstract fun getRankDao(): RankDao

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.model.User
@@ -13,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-open class BaseFragment : Fragment(), CoroutineScope {
+open class BaseFragment : DialogFragment(), CoroutineScope {
     private lateinit var job: Job
     private var mProgress: CustomProgressDialog? = null
 

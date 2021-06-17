@@ -87,6 +87,7 @@
             android:layout_margin="@dimen/dimen_10"
             android:background="@drawable/edittext_background"
             android:drawablePadding="@dimen/dimen_10"
+            android:gravity="center_vertical"
             android:hint="Enter your Answer"
             android:padding="@dimen/dimen_12"
             android:textColor="@color/colorTextDark"
@@ -114,19 +115,23 @@
             android:layout_height="@dimen/dimen_2"
             android:background="@color/colorBackground" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_45"
             android:layout_margin="@dimen/dimen_10"
             android:background="@drawable/edittext_background"
-            android:foreground="@drawable/drawable_dashed_border"
-            android:orientation="horizontal">
+            android:foreground="@drawable/drawable_dashed_border">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="@dimen/dimen_30"
-                android:layout_height="@dimen/dimen_30"
-                android:layout_margin="@dimen/dimen_10"
-                app:cardCornerRadius="@dimen/dimen_50">
+                android:id="@+id/card"
+                android:layout_width="@dimen/dimen_35"
+                android:layout_height="@dimen/dimen_35"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_5"
+                android:layout_marginLeft="@dimen/dimen_5"
+                app:cardCornerRadius="@dimen/dimen_40">
 
                 <ImageView
                     android:id="@+id/attachment_image_view"
@@ -139,11 +144,29 @@
                 android:id="@+id/attachment_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_toStartOf="@id/delete_file_button"
+                android:layout_toLeftOf="@id/delete_file_button"
+                android:layout_toEndOf="@id/card"
                 android:gravity="center_vertical"
+                android:padding="@dimen/dimen_10"
+                android:layout_toRightOf="@id/card"
                 android:textColor="@color/colorTextDark"
                 android:textSize="@dimen/text_15" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            <ImageButton
+                android:id="@+id/delete_file_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end|center_vertical"
+                android:background="@color/fui_transparent"
+                android:onClick="onFileDelete"
+                android:padding="@dimen/dimen_2"
+                android:src="@drawable/ic_baseline_delete"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

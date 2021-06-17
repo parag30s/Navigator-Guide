@@ -70,6 +70,7 @@ class QuestionsListAdapter internal constructor(
         val linkTextView = convertView!!.findViewById<TextView>(R.id.link_textview)
         val attachmentTextView = convertView!!.findViewById<TextView>(R.id.attachment_text_view)
         val attachmentImageView = convertView!!.findViewById<ImageView>(R.id.attachment_image_view)
+        val deleteImageButton = convertView!!.findViewById<ImageButton>(R.id.delete_file_button)
 
         radioGroupButton.setOnCheckedChangeListener(this)
         radioGroupButton.contentDescription = questionModel.qid.toString()
@@ -78,7 +79,9 @@ class QuestionsListAdapter internal constructor(
         val mAnswer: String? =
             (context as QuestionsActivity).getUserQuestionResponse(questionModel.qid)[0].answer
         if (!mAnswer.isNullOrEmpty()) {
-            if (questionModel.ansType?.contentEquals(AppConstants.TYPE_TEXT_FIELD)!!) {
+            if (questionModel.ansType?.contentEquals(AppConstants.TYPE_TEXT_FIELD)!! || questionModel.ansType?.contentEquals(
+                    AppConstants.TYPE_DATE_PICKER)!!
+            ) {
                 answerTextView.text = mAnswer
             } else {
                 when (mAnswer) {
@@ -87,7 +90,9 @@ class QuestionsListAdapter internal constructor(
                     context.getString(R.string.txt_na) -> radioNa.isChecked = true
                 }
             }
-        } else if (questionModel.ansType?.contentEquals(AppConstants.TYPE_TEXT_FIELD)!!) {
+        } else if (questionModel.ansType?.contentEquals(AppConstants.TYPE_TEXT_FIELD)!! || questionModel.ansType?.contentEquals(
+                AppConstants.TYPE_DATE_PICKER)!!
+        ) {
             answerTextView.text = ""
         }
 
@@ -106,6 +111,14 @@ class QuestionsListAdapter internal constructor(
         } else if (questionModel.ansType.equals(AppConstants.TYPE_TEXT_FIELD)) {
             radioGroupButton.visibility = GONE
             answerTextView.visibility = VISIBLE
+        } else if (questionModel.ansType.equals(AppConstants.TYPE_DATE_PICKER)) {
+            radioGroupButton.visibility = GONE
+            answerTextView.visibility = VISIBLE
+            answerTextView.hint = "Select Date"
+            answerTextView.setCompoundDrawablesWithIntrinsicBounds(0,
+                0,
+                R.drawable.ic_baseline_date_range,
+                0)
         }
 
         val attachment: ByteArray? =
@@ -114,9 +127,11 @@ class QuestionsListAdapter internal constructor(
             val bitmap: Bitmap = ImageBitmapUtils.convertStringToBitmap(attachment!!)
             attachmentImageView.setImageBitmap(bitmap)
             attachmentTextView.text = "View Attachment"
+            deleteImageButton.visibility = View.VISIBLE
         } else {
             attachmentImageView.setImageResource(R.drawable.ic_baseline_attach_file)
             attachmentTextView.text = "Browse Attachment"
+            deleteImageButton.visibility = View.GONE
         }
 
         if (!questionModel.description.isNullOrEmpty()) {
@@ -131,7 +146,7 @@ class QuestionsListAdapter internal constructor(
             val spannable = SpannableStringBuilder(context.getString(R.string.txt_link))
             spannable.setSpan(
                 ForegroundColorSpan(Color.RED),
-                12, 22,
+                0, 5,
                 Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             )
             linkTextView.text = spannable
@@ -144,7 +159,11 @@ class QuestionsListAdapter internal constructor(
         }
 
         answerTextView.setOnClickListener {
-            openTextInputDialog(questionModel.qid.toString(), mAnswer, 0)
+            if (questionModel.ansType.equals(AppConstants.TYPE_TEXT_FIELD)) {
+                openTextInputDialog(questionModel.qid.toString(), mAnswer, 0)
+            } else {
+                openDatePickerDialog(questionModel.qid.toString(), mAnswer)
+            }
         }
 
         commentTextView.setOnClickListener {
@@ -152,13 +171,17 @@ class QuestionsListAdapter internal constructor(
         }
 
         attachmentTextView.setOnClickListener {
-            if (questionModel.attachment != null) {
+            if (attachment != null) {
                 val intent = Intent(context, ImagePreviewActivity::class.java)
                 intent.putExtra(AppConstants.QID, questionModel.qid)
                 context.startActivity(intent)
             } else {
                 (context as QuestionsActivity).addAttachments(questionModel.qid)
             }
+        }
+
+        deleteImageButton.setOnClickListener {
+            (context as QuestionsActivity).deleteAttachment(questionModel.qid)
         }
         return convertView
     }
@@ -255,6 +278,51 @@ class QuestionsListAdapter internal constructor(
             dialog.dismiss()
         }
 
+        dialog.show()
+    }
+
+    private fun openDatePickerDialog(qid: String, content: String?) {
+        val bottomSheet =
+            (context as QuestionsActivity).layoutInflater.inflate(R.layout.dialog_bottom_sheet,
+                null)
+        val dialog = BottomSheetDialog((context as QuestionsActivity))
+        dialog.setContentView(bottomSheet)
+        val mTitle: TextView? = dialog.findViewById(R.id.bottom_title_text)
+        val mMessage: TextView? = dialog.findViewById(R.id.bottom_message_text)
+        val mButtonYes: Button? = dialog.findViewById(R.id.bottom_yes_button)
+        val mButtonNo: Button? = dialog.findViewById(R.id.bottom_no_button)
+        val mDatePicker: DatePicker? = dialog.findViewById(R.id.date_picker_view)
+        mTitle?.visibility = View.GONE
+        mMessage?.visibility = View.GONE
+        mDatePicker?.visibility = View.VISIBLE
+
+        mButtonYes?.text = context.getString(R.string.txt_save)
+        mButtonNo?.text = context.getString(R.string.txt_cancel)
+
+        val today = Calendar.getInstance()
+        var date: String? =
+            "${today.get(Calendar.DAY_OF_MONTH)}/${today.get(Calendar.MONTH) + 1}/${
+                today.get(Calendar.YEAR)
+            }"
+
+        mDatePicker?.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH),
+            today.get(Calendar.DAY_OF_MONTH)
+        ) { view, year, month, day ->
+            val month = month + 1
+            date = "$day/$month/$year"
+        }
+
+        mButtonYes?.setOnClickListener {
+            (context as QuestionsActivity).updateQuestionResponse(
+                qid,
+                date.toString()
+            )
+            dialog.dismiss()
+        }
+
+        mButtonNo?.setOnClickListener {
+            dialog.dismiss()
+        }
         dialog.show()
     }
 }
