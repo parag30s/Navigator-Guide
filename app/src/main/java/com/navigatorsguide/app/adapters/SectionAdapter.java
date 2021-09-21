@@ -1,12 +1,10 @@
 package com.navigatorsguide.app.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,10 +50,12 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionH
     public void onBindViewHolder(@NonNull SectionHolder holder, int position) {
         holder.mTextView.setText(mList.get(position).getSectionName());
         holder.mImageView.setImageResource(AppUtils.Companion.getSectionThumbnail(mList.get(position).getSectionid()));
-        if(!mEligibilityList.contains(mList.get(position).getSectionid())){
-           holder.mLockLayout.setVisibility(View.VISIBLE);
-        } else{
+        if (mEligibilityList.contains(mList.get(position).getSectionid())
+                && AppUtils.Companion.getSectionEligibleStatus(String.valueOf(System.currentTimeMillis()),
+                String.valueOf(mList.get(position).getLastUnlockDate()))) {
             holder.mLockLayout.setVisibility(View.GONE);
+        } else {
+            holder.mLockLayout.setVisibility(View.VISIBLE);
         }
         holder.bind(mList.get(position), mListener);
     }
@@ -77,13 +77,14 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionH
             mImageView = itemView.findViewById(R.id.section_image);
             mTextView = itemView.findViewById(R.id.section_title);
             mLockLayout = itemView.findViewById(R.id.lock_content_layout);
-            mSectionView.getLayoutParams().height = (mWidth/3);
-            mSectionView.getLayoutParams().width = (mWidth/2);
+            mSectionView.getLayoutParams().height = (mWidth / 3);
+            mSectionView.getLayoutParams().width = (mWidth / 2);
         }
 
         public void bind(Section item, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(item);
                 }
             });

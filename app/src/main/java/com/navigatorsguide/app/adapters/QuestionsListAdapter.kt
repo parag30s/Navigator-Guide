@@ -16,6 +16,7 @@ import android.widget.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.navigatorsguide.app.R
 import com.navigatorsguide.app.database.entities.Questions
+import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.ui.home.QuestionsActivity
 import com.navigatorsguide.app.utils.AppConstants
 import com.navigatorsguide.app.utils.AppUtils
@@ -123,8 +124,8 @@ class QuestionsListAdapter internal constructor(
 
         val attachment: ByteArray? =
             (context as QuestionsActivity).getUserQuestionResponse(questionModel.qid)[0].attachment
-        if (attachment != null) {
-            val bitmap: Bitmap = ImageBitmapUtils.convertStringToBitmap(attachment!!)
+        if (attachment != null && !attachment.equals("[]")) {
+            val bitmap: Bitmap = ImageBitmapUtils.convertStringToBitmap(attachment)
             attachmentImageView.setImageBitmap(bitmap)
             attachmentTextView.text = "View Attachment"
             deleteImageButton.visibility = View.VISIBLE
@@ -216,7 +217,7 @@ class QuestionsListAdapter internal constructor(
             convertView = layoutInflater.inflate(R.layout.item_question_group, null)
         }
         val listTitleTextView = convertView!!.findViewById<TextView>(R.id.lblListHeader)
-        if (questionModel.viq.isNullOrEmpty()) {
+        if (questionModel.viq.isNullOrEmpty() || PreferenceManager.getShipTypeName(context).equals("Bulk Carrier")) {
             listTitleTextView.text = questionModel.qtext
         } else {
             listTitleTextView.text = questionModel.qtext + " (VIQ-${questionModel.viq})"

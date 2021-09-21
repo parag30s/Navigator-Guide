@@ -17,8 +17,15 @@ class AppConstants {
         public const val TYPE_RADIO_FIELD = "tf"
         public const val TYPE_TEXT_FIELD = "tx"
         public const val TYPE_DATE_PICKER = "dp"
+
         public const val SECTION_INCOMPLETE = 0
         public const val SECTION_COMPLETE = 1
+
+        public const val REGION_COMPULSORY = "1"
+
+        public const val USER_ACCESS_COMMENT = 1
+        public const val USER_ACCESS_EVIDENCE = 2
+        public const val USER_ACCESS_VIDEO = 3
 
         public const val FILE_PDF = "application/pdf"
         public const val FILE_SHEET = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

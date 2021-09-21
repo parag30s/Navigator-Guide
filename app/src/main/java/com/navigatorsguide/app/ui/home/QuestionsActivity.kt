@@ -73,8 +73,8 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
         emptyTextView = findViewById(R.id.empty_text_view)
         hiddenFooterView = findViewById(R.id.hidden_footer_view)
 
-        rankId = PreferenceManager.getPositionId(this)
-        shipId = PreferenceManager.getShipTypeId(this)
+        rankId = PreferenceManager.getRegistrationInfo(this)?.position
+        shipId = PreferenceManager.getRegistrationInfo(this)?.shipType
 
         launch {
             withContext(Dispatchers.Default) {
@@ -91,10 +91,27 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
         }
 
         proceedButton.setOnClickListener {
-            val intent = Intent(this, SubmissionActivity::class.java)
-            intent.putExtra(AppConstants.SUBS_ID, subsId)
-            intent.putExtra(AppConstants.SECTION_NAME, sectionName)
-            startActivity(intent)
+            launch {
+                withContext(Dispatchers.Default) {
+                    val user = AppDatabase.invoke(context = this@QuestionsActivity)
+                        .getUsersDao().getUserAccess(AppConstants.USER_ACCESS_COMMENT)
+                    if (user.value == AppConstants.REGION_COMPULSORY) {
+                        val list = AppDatabase.invoke(context = this@QuestionsActivity)
+                            .getQuestionsDao().getUncommentedQuestions(subsId!!)
+                        if (list.isNotEmpty()) {
+                            Handler(Looper.getMainLooper()).post {
+                                Toast.makeText(this@QuestionsActivity,
+                                    "Please don't leave questions uncommented.",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            gotoSubmission()
+                        }
+                    } else {
+                        gotoSubmission()
+                    }
+                }
+            }
         }
 
         if (!sectionNote.isNullOrEmpty()) {
@@ -118,8 +135,33 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_video_link) {
-            AppUtils.showWebViewDialog(this, sectionLink.toString())
+            launch {
+                withContext(Dispatchers.Default) {
+                    val user = AppDatabase.invoke(context = this@QuestionsActivity)
+                        .getUsersDao().getUserAccess(AppConstants.USER_ACCESS_VIDEO)
+                    val parentId =
+                        (AppDatabase.invoke(context = this@QuestionsActivity).getSubSectionDao()
+                            .getParentIdFromSubId(subsId)).subsparent
+                    when {
+                        user.value == AppConstants.REGION_COMPULSORY -> {
+                            AppUtils.showWebViewDialog(this@QuestionsActivity, sectionLink.toString())
+                        }
+                        AppUtils.isVideoAllowed(parentId) -> {
+                            AppUtils.showWebViewDialog(this@QuestionsActivity, sectionLink.toString())
+                        }
+                        else -> {
+                            Handler(Looper.getMainLooper()).post {
+                                Toast.makeText(this@QuestionsActivity,
+                                    "You don't have video access for this section.",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+
         }
+
         if (item.itemId == R.id.action_reset) {
             val dialog: DialogUtil = DialogUtil(
                 getString(R.string.txt_reset_title),
@@ -140,7 +182,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
         return super.onOptionsItemSelected(item)
     }
 
-    fun setQuestionsListAdapter() {
+    private fun setQuestionsListAdapter() {
         for (i in listOutPackHeader.indices) {
             val childData: MutableList<String> = ArrayList()
             val questionModel: Questions = listOutPackHeader[i]
@@ -194,6 +236,13 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
 
     }
 
+    private fun gotoSubmission() {
+        val intent = Intent(this, SubmissionActivity::class.java)
+        intent.putExtra(AppConstants.SUBS_ID, subsId)
+        intent.putExtra(AppConstants.SECTION_NAME, sectionName)
+        startActivity(intent)
+    }
+
     fun updateQuestionResponse(qid: String, selection: String) {
         launch {
             withContext(Dispatchers.Default) {
@@ -223,8 +272,13 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
     override fun onCommentPostItemClick(qid: String, comment: String) {
         launch {
             withContext(Dispatchers.Default) {
-                AppDatabase.invoke(context = this@QuestionsActivity)
-                    .getQuestionsDao().updateComment(qid.toInt(), comment)
+                if (comment.isEmpty()) {
+                    AppDatabase.invoke(context = this@QuestionsActivity)
+                        .getQuestionsDao().updateComment(qid.toInt(), null)
+                } else {
+                    AppDatabase.invoke(context = this@QuestionsActivity)
+                        .getQuestionsDao().updateComment(qid.toInt(), comment)
+                }
             }
         }
         Handler(Looper.getMainLooper()).postDelayed({
@@ -278,7 +332,7 @@ class QuestionsActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener,
                 val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
 
                 val out = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, out)
                 val decoded = BitmapFactory.decodeStream(ByteArrayInputStream(out.toByteArray()))
 
                 var imageSource: String? = ImageBitmapUtils.convertBitmapToString(decoded)

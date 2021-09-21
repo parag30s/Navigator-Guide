@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,17 +30,13 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.launch
 import java.util.*
 
-
 class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var sectionAdapter: SectionAdapter
     private lateinit var homeViewModel: HomeViewModel
-
     lateinit var sectionList: List<Section>
     lateinit var eligibleList: List<Int>
-    private var rankId: Int = 0
-    private var shipId: Int = 0
     private lateinit var selectedItem: Section
     private lateinit var shipNameDisposable: Disposable
 
@@ -55,20 +52,26 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
         launch {
             context?.let {
                 sectionList = AppDatabase.invoke(requireActivity()).getSectionDao().getAllSections()
-
-                rankId = AppDatabase.invoke(requireActivity()).getRankDao()
-                    .getIdFromRank(PreferenceManager.getRegistrationInfo(requireActivity())!!.position)
-                shipId = AppDatabase.invoke(requireActivity()).getShipTypeDao()
-                    .getIdFromShip(PreferenceManager.getRegistrationInfo(requireActivity())!!.shipType)
-
-                PreferenceManager.savePositionId(requireActivity(), rankId)
-                PreferenceManager.saveShipTypeId(requireActivity(), shipId)
                 setSectionAdapter()
             }
         }
 
-        shipNameDisposable = RxBus.listen(RxEvent.EventAddShipName::class.java).subscribe {
-            inspectionAllowed(selectedItem)
+        try {
+            shipNameDisposable = RxBus.listen(RxEvent.EventAddShipName::class.java).subscribe {
+                setSectionAdapter()
+                if (eligibleList.contains(selectedItem?.sectionid) && AppUtils.getSectionEligibleStatus(
+                        System.currentTimeMillis()
+                            .toString(),
+                        selectedItem?.lastUnlockDate.toString())
+                ) {
+                    inspectionAllowed(selectedItem)
+                } else {
+                    Toast.makeText(requireActivity(),
+                        getString(R.string.txt_access_message),
+                        Toast.LENGTH_LONG).show()
+                }
+            }
+        } catch (e: Exception) {
         }
         return root
     }
@@ -79,7 +82,9 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
     }
 
     private fun setSectionAdapter() {
-        eligibleList = Eligibility.isEligibleSection(sectionList, rankId)
+        eligibleList = Eligibility.isEligibleSection(sectionList,
+            PreferenceManager.getRegistrationInfo(requireActivity())?.position!!,
+            PreferenceManager.getRegistrationInfo(requireActivity())?.shipType!!)
         sectionAdapter =
             SectionAdapter(activity, sectionList, eligibleList, AppUtils.getScreenWidth(), this)
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
@@ -92,7 +97,10 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
         if (item != null) {
             selectedItem = item
         }
-        if (eligibleList.contains(item?.sectionid)) {
+        if (eligibleList.contains(item?.sectionid) && AppUtils.getSectionEligibleStatus(System.currentTimeMillis()
+                .toString(),
+                item?.lastUnlockDate.toString())
+        ) {
             val dialog: DialogUtil =
                 if (PreferenceManager.getShipName(requireActivity()).isNullOrEmpty()) {
                     DialogUtil(
@@ -173,8 +181,8 @@ class HomeFragment : BaseFragment(), SectionAdapter.OnItemClickListener {
         val subject = "Regarding access of ${item?.sectionName} section"
         val body = Html.fromHtml(String.format(getString(R.string.txt_email_body_for_access),
             item?.sectionName,
-            PreferenceManager.getRegistrationInfo(requireActivity())!!.position,
-            PreferenceManager.getRegistrationInfo(requireActivity())!!.shipType,
+            PreferenceManager.getPositionName(requireActivity()),
+            PreferenceManager.getShipTypeName(requireActivity()),
             item?.sectionName, date,
             PreferenceManager.getRegistrationInfo(requireActivity())!!.userName))
 

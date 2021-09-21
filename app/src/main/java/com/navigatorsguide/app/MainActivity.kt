@@ -3,7 +3,6 @@ package com.navigatorsguide.app
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -16,11 +15,18 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
+import com.navigatorsguide.app.database.AppDatabase
 import com.navigatorsguide.app.managers.PreferenceManager
 import com.navigatorsguide.app.model.User
+import com.navigatorsguide.app.rx.RxBus
+import com.navigatorsguide.app.rx.RxEvent
 import com.navigatorsguide.app.utils.AppConstants
+import com.navigatorsguide.app.utils.OptionsBottomSheetFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity(), OptionsBottomSheetFragment.ItemClickListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var mDatabaseReference: DatabaseReference? = null
@@ -84,10 +90,26 @@ class MainActivity : AppCompatActivity() {
             Log.d("NotificationRepository", "value $value")
             Log.d("NotificationRepository", "action $action")
         }
+
+        launch {
+            withContext(Dispatchers.Default) {
+                val rank = AppDatabase.invoke(this@MainActivity).getRankDao()
+                    .getRank(user?.position!!)
+                val ship = AppDatabase.invoke(this@MainActivity).getShipTypeDao()
+                    .getShipType(user.shipType)
+
+                PreferenceManager.savePositionName(this@MainActivity, rank.rankName)
+                PreferenceManager.saveShipTypeName(this@MainActivity, ship.typeName)
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onItemClick(item: String) {
+        RxBus.publish(RxEvent.EventProfileImage(item))
     }
 }

@@ -1,14 +1,13 @@
 package com.navigatorsguide.app.database.dao
 
-import androidx.room.Dao
-import androidx.room.Query
+import androidx.room.*
 import com.navigatorsguide.app.database.entities.Questions
 
 @Dao
 interface QuestionsDao {
 
-    @Query("SELECT * FROM Questions")
-    suspend fun getAllQuestions(): List<Questions>
+    @Query("SELECT * FROM Questions WHERE qid IN(:qid)")
+    suspend fun getQuestion(qid: Int): Questions
 
     @Query("SELECT * FROM Questions WHERE qparent IN(:subsId) AND ranks LIKE'%' || :rankId || '%' AND shiptypes LIKE'%' || :shipId || '%'")
     suspend fun getSelectedQuestions(subsId: Int, rankId: Int, shipId: Int): List<Questions>
@@ -28,7 +27,7 @@ interface QuestionsDao {
     @Query("UPDATE Questions SET attachment = null WHERE qid =:qid")
     suspend fun deleteAttachment(qid: Int?)
 
-    @Query("SELECT * FROM Questions WHERE qparent IN(:subsId) AND (answer IN('No') OR comment IS NOT NULL OR attachment IS NOT NULL)")
+    @Query("SELECT * FROM Questions WHERE qparent IN(:subsId) AND  (answer IN('No') OR comment IS NOT NULL OR attachment IS NOT NULL)")
     suspend fun getReportedQuestions(subsId: Int): List<Questions>
 
     @Query("Update Questions SET answer = null, comment = null, attachment = null, attachmentlink = null WHERE qparent in (Select subsid from subsection where subsparent = :secId)")
@@ -36,4 +35,19 @@ interface QuestionsDao {
 
     @Query("UPDATE Questions SET answer = null, comment = null, attachment = null, attachmentlink = null WHERE qparent =:subId")
     suspend fun resetSubSection(subId: Int?)
+
+    @Query("SELECT * FROM Questions WHERE qparent IN(:subsId) AND comment IS NULL AND answer IS NOT NULL")
+    suspend fun getUncommentedQuestions(subsId: Int): List<Questions>
+
+    @Query("Select MAX(qid) from Questions")
+    suspend fun getMaxCount(): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertQuestion(vararg questions: Questions)
+
+    @Update
+    suspend fun updateQuestion(vararg questions: Questions)
+
+    @Query("DELETE FROM Questions WHERE qid = :qid")
+    suspend fun deleteQuestion(qid: Int)
 }

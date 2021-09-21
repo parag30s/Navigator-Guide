@@ -13,8 +13,13 @@
     <color name="colorTextLight">#51515d</color>
     <color name="colorTextDark">#231f20</color>
     <color name="colorRed">#e72327</color>
+    <color name="colorBlue">#2265D2</color>
     <color name="colorDiv">#E5E5E5</color>
     <color name="colorBackground">#ebeaf1</color>
     <color name="control_normal">#c5c5c5</color>
     <color name="colorTextInput">#ededf0</color>
+    <color name="colorDefaultItem">#ededf0</color>
+    <!--<color name="colorEligibleItem">#EBF2FF</color>-->
+    <color name="colorEligibleItem">#FCE4EC</color>
+    <color name="colorDisabledButton">#56F23B5F</color>
 </resources>

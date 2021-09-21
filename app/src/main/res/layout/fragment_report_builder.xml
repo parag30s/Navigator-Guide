@@ -1,48 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jaredrummler.materialspinner.MaterialSpinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_45"
-        android:layout_margin="16dp"
-        app:ms_arrow_tint="@color/colorTextDark"
-        app:ms_background_color="@color/colorTextInput"
-        app:ms_hide_arrow="false" />
-
-
-    <Button
-        android:id="@+id/create_report_button"
-        style="@style/ButtonStyle"
-        android:layout_width="@dimen/dimen_200"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/dimen_30"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/spinner"
-        android:text="Share Report"
-        android:textSize="@dimen/text_14" />
-
-    <TextView
-        android:id="@+id/view_report_label"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:layout_below="@+id/create_report_button"
-        android:layout_marginTop="@dimen/dimen_30"
-        android:gravity="top|center_horizontal"
-        android:text="@string/view_report_text"
-        android:textSize="@dimen/text_16" />
-
-    <TextView
-        android:id="@+id/empty_report_text_view"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:gravity="center"
-        android:text="@string/txt_empty_report"
-        android:textSize="@dimen/text_16"
-        android:visibility="gone" />
-</RelativeLayout>
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_45"
+            android:layout_below="@id/spinner"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:background="@color/colorTextInput"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dimen_8"
+            android:paddingTop="@dimen/dimen_5"
+            android:paddingEnd="@dimen/dimen_8"
+            app:smsp_enableFloatingLabel="false"
+            app:smsp_floatingLabelColor="@color/colorTextDark"
+            app:smsp_hint="Select Inspected Section"
+            app:smsp_itemColor="@color/colorTextLight"
+            app:smsp_itemListColor="@color/colorTextLight"
+            app:smsp_itemListHintBackgroundColor="@color/colorTextLight"
+            app:smsp_itemListHintColor="@color/colorTextLight"
+            app:smsp_multilineError="false"
+            app:smsp_selectedItemListColor="@color/colorAccent"
+            app:smsp_underlineSize="0dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subsection_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_8"
+            android:scrollbars="vertical" />
+
+        <RelativeLayout
+            android:id="@+id/list_action_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/show_all_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text="@string/show_all"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/reset_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:text="@string/reset"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_14"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/create_report_button"
+            style="@style/ButtonStyle"
+            android:layout_width="@dimen/dimen_200"
+            android:layout_height="@dimen/button_height"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_40"
+            android:enabled="false"
+            android:text="Share Report"
+            android:textSize="@dimen/text_14" />
+
+        <TextView
+            android:id="@+id/view_report_label"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_below="@+id/create_report_button"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/view_report_text"
+            android:textSize="@dimen/text_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/dimen_0.5"
+            android:background="@drawable/drawable_faded_divider" />
+
+        <TextView
+            android:id="@+id/view_complete_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:text="Want to get complete report, tap on Download for saving the report or tap on View for viewing the report."
+            android:textColorHighlight="@color/colorBlue"
+            android:textColorLink="@color/colorAccent"
+            android:textSize="@dimen/text_16" />
+
+
+        <TextView
+            android:id="@+id/empty_report_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/txt_empty_report"
+            android:textSize="@dimen/text_16"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

@@ -9,6 +9,13 @@
                     <solid android:color="@color/colorAccent" />
                 </shape>
             </item>
+
+            <item android:state_enabled="false">
+                <shape>
+                    <corners android:radius="@dimen/dimen_25" />
+                    <solid android:color="@color/colorDisabledButton" />
+                </shape>
+            </item>
         </selector>
     </item>
 

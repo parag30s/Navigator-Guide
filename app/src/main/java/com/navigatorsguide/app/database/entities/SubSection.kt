@@ -20,4 +20,7 @@ data class SubSection(
     @NonNull var risk: Int?,
     @NonNull var status: Int?,
     @NonNull var note: String?,
-    @NonNull var attachment_link: String?)
+    @NonNull var attachment_link: String?,
+    @NonNull var ranks: String?,
+    @NonNull var shiptypes: String?,
+    @NonNull var evidence: String?)

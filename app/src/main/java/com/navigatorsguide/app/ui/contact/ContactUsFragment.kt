@@ -1,12 +1,5 @@
 package com.navigatorsguide.app.ui.contact
 
-/*import com.itextpdf.text.*
-import com.itextpdf.text.BaseColor
-import com.itextpdf.text.pdf.BaseFont
-import com.itextpdf.text.pdf.PdfPCell
-import com.itextpdf.text.pdf.PdfPTable
-import com.itextpdf.text.pdf.PdfWriter
-import com.itextpdf.text.pdf.draw.LineSeparator*/
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -36,10 +29,10 @@ class ContactUsFragment : BaseFragment(), View.OnClickListener {
         whatsAppLayout = root.findViewById(R.id.whats_app_layout)
         linkedInLayout = root.findViewById(R.id.linked_in_layout)
 
-//        emailLayout.setOnClickListener(this)
-//        phoneLayout.setOnClickListener(this)
-//        whatsAppLayout.setOnClickListener(this)
-//        linkedInLayout.setOnClickListener(this)
+        emailLayout.setOnClickListener(this)
+        phoneLayout.setOnClickListener(this)
+        whatsAppLayout.setOnClickListener(this)
+        linkedInLayout.setOnClickListener(this)
         return root
     }
 

@@ -17,6 +17,7 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.util.Patterns
+import android.webkit.URLUtil
 import android.widget.EditText
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
@@ -25,6 +26,7 @@ import androidx.fragment.app.FragmentActivity
 import com.navigatorsguide.app.R
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 
 
 class AppUtils {
@@ -131,11 +133,26 @@ class AppUtils {
             }
         }
 
+        fun isVideoAllowed(sectionId: Int?): Boolean {
+            return when (sectionId) {
+                1 -> true
+                4 -> true
+                12 -> true
+                else -> {
+                    false
+                }
+            }
+        }
+
         fun showWebViewDialog(mContext: Context, mLink: String) {
             val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
             builder.setToolbarColor(ContextCompat.getColor(mContext, R.color.colorPrimary))
             val customTabsIntent: CustomTabsIntent = builder.build()
-            customTabsIntent.launchUrl(mContext, Uri.parse(mLink))
+            if (URLUtil.isValidUrl(mLink)) {
+                customTabsIntent.launchUrl(mContext, Uri.parse(mLink))
+            } else {
+                Toast.makeText(mContext, "Invalid URL.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         fun getSitedValue(sitedId: Int): String? {
@@ -159,8 +176,40 @@ class AppUtils {
 
         fun getDate(time: String): String {
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-            val date: String = simpleDateFormat.format(time.toLong())
-            return date
+            return simpleDateFormat.format(time.toLong())
+        }
+
+        fun getStorageDate(time: String): String {
+            val simpleDateFormat = SimpleDateFormat("yyyyMMddHHmmssSS", Locale.ENGLISH)
+            return simpleDateFormat.format(time.toLong())
+        }
+
+        fun getSectionEligibleStatus(currentDate: String, allowedDate: String): Boolean {
+            if (allowedDate != "null" && allowedDate != "") {
+                val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+
+                val date1 = simpleDateFormat.parse(simpleDateFormat.format(currentDate.toLong()))
+                val date2 = simpleDateFormat.parse(allowedDate)
+
+                val cal1 = Calendar.getInstance()
+                val cal2 = Calendar.getInstance()
+                cal1.time = date1
+                cal2.time = date2
+
+                return when {
+                    cal1.after(cal2) -> {
+                        false
+                    }
+                    cal1.before(cal2) -> {
+                        true
+                    }
+                    cal1 == cal2 -> {
+                        true
+                    }
+                    else -> false
+                }
+            }
+            return false
         }
 
         fun composeEmail(context: Context, addresses: Array<String>, subject: String) {

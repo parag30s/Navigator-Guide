@@ -65,6 +65,13 @@ class InspectionFragment() : BaseFragment(),
                 requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
                 requireActivity().actionBar?.setHomeButtonEnabled(true)
             }
+            val backArrowView = appbar.findViewById<ImageView>(R.id.back_arrow)
+            backArrowView.setOnClickListener {
+                if (useAsDialogFragment) {
+                    RxBus.publish(RxEvent.EventAddShipName(shipNameEditText.text.toString()))
+                    dismiss()
+                }
+                activity?.supportFragmentManager?.popBackStack() }
             useAsDialogFragment = arguments?.getBoolean("fragmentDialog")!!
         }
 
@@ -96,9 +103,7 @@ class InspectionFragment() : BaseFragment(),
 
     private fun init() {
         user = PreferenceManager.getRegistrationInfo(requireActivity())
-        if (user != null) {
-            shipTypeEditText.setText(user!!.getShipType())
-        }
+        shipTypeEditText.setText(PreferenceManager.getShipTypeName(requireActivity()))
         shipNameEditText.setText(PreferenceManager.getShipName(requireActivity()))
     }
 
@@ -106,14 +111,17 @@ class InspectionFragment() : BaseFragment(),
         when (v?.id) {
             R.id.shiptype_edittext -> {
                 val shipTypeMenu = PopupMenu(requireActivity(), shipTypeEditText)
-                for (i in 0 until mShipTypeList.size) {
-                    shipTypeMenu.menu.add(i, Menu.FIRST, i, mShipTypeList.get(i).typeName)
+                for (i in mShipTypeList.indices) {
+                    shipTypeMenu.menu.add(i, Menu.FIRST, i, mShipTypeList[i].typeName)
                 }
                 shipTypeMenu.setOnMenuItemClickListener { item ->
                     shipTypeEditText.setText(item.title)
-                    PreferenceManager.saveShipTypeInfo(requireActivity(), item.title.toString())
+                    PreferenceManager.saveShipTypeName(requireActivity(), item.title.toString())
+                    val ship = mShipTypeList.find { it.typeName == item.title }?.typeId
+                    ship?.let { PreferenceManager.saveShipType(requireActivity(), it) }
                     mDatabaseReference!!.child(user!!.userId).child(AppConstants.USER_SHIP_TYPE)
-                        .setValue(item.title)
+                        .setValue(
+                            ship)
                     false
                 }
                 shipTypeMenu.show()

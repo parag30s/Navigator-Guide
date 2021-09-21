@@ -4,7 +4,7 @@ import com.navigatorsguide.app.database.entities.Section
 import java.util.*
 
 object Eligibility {
-    fun isEligibleSection(sectionList: List<Section?>, rankId: Int): List<Int> {
+    fun isEligibleSection(sectionList: List<Section?>, rankId: Int, shipType: Int): List<Int> {
         val rankEligibility = ArrayList<Int>()
         val shipEligibility = ArrayList<Int>()
         for (section in sectionList) {
@@ -20,7 +20,7 @@ object Eligibility {
                 }
                 for (s in shipList) {
                     if (s.equals(
-                            rankId.toString(),
+                            shipType.toString(),
                             ignoreCase = true
                         )
                     ) shipEligibility.add(section.sectionid)

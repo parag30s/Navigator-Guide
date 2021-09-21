@@ -7,4 +7,11 @@
             <corners android:radius="@dimen/dimen_25" />
         </shape>
     </item>
+
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@color/colorDisabledButton" />
+            <corners android:radius="@dimen/dimen_25" />
+        </shape>
+    </item>
 </selector>

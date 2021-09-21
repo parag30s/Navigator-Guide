@@ -1,38 +1,54 @@
 package com.navigatorsguide.app.messaging
 
-import android.R.id.message
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.util.Log
-import android.widget.RemoteViews
-import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.navigatorsguide.app.MainActivity
-import com.navigatorsguide.app.R
-import com.navigatorsguide.app.database.AppDatabase
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONTokener
 
 
 class AppMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        if (remoteMessage.data != null) {
-            Log.d("NotificationRepository", "" + remoteMessage.data)
-            Log.d("NotificationRepository", "id " + remoteMessage.data.get("id"))
-            Log.d("NotificationRepository", "value " + remoteMessage.data.get("value"))
-            Log.d("NotificationRepository", "action " + remoteMessage.data.get("action"))
+        if (!remoteMessage.data.isNullOrEmpty()) {
+            val data = remoteMessage.data
+            Log.d("AppMessagingService", "" + data)
+            val jsonObject = JSONTokener(data.toString()).nextValue() as JSONObject
+            val dbObject = jsonObject.getJSONObject("db")
+            Log.d("AppMessagingService", "" + dbObject)
+
+            val actionList = mutableListOf<NotificationModel>()
+            val iterator: Iterator<String> = dbObject.keys()
+            while (iterator.hasNext()) {
+                val key = iterator.next()
+                Log.d("AppMessagingService", "" + key)
+                val jsonArray: JSONArray = dbObject.getJSONArray(key)
+                Log.d("AppMessagingService", "" + jsonArray)
+                val length: Int = jsonArray.length()
+                for (i in 0 until length) {
+                    val jsonObj = jsonArray.getJSONObject(i)
+                    Log.d("action : ", "" + jsonObj.getString("action"))
+                    Log.d("id : ", "" + jsonObj.getString("id"))
+                    Log.d("value : ", "" + jsonObj.getString("value"))
+                    val notificationModel =
+                        NotificationModel(key.toInt(),
+                            jsonObj.getInt("action"),
+                            jsonObj.getInt("id"),
+                            jsonObj.getString("value"))
+                    actionList.add(notificationModel)
+                }
+            }
 
             val notificationRepository: NotificationRepository =
                 NotificationRepository.getInstance()
             notificationRepository.init(this.application)
-            val notificationModel =
-                NotificationModel("Section", "Insert", "123", "Check It")
-            notificationRepository.processNotification(notificationModel)
+            notificationRepository.processNotification(actionList)
         }
+    }
+
+    override fun onNewToken(p0: String) {
+        super.onNewToken(p0)
     }
 }

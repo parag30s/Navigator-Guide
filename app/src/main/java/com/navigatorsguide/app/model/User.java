@@ -5,15 +5,15 @@ public class User {
     public String userName;
     public String email;
     public String password;
-    public String position;
-    public String shipType;
+    public int position;
+    public int shipType;
     public String createdAt;
     public String token;
 
     public User() {
     }
 
-    public User(String userId, String userName, String email, String password, String position, String shipType, String token, String createdAt) {
+    public User(String userId, String userName, String email, String password, int position, int shipType, String token, String createdAt) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
@@ -56,19 +56,19 @@ public class User {
         this.password = password;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
-    public String getShipType() {
+    public int getShipType() {
         return shipType;
     }
 
-    public void setShipType(String shipType) {
+    public void setShipType(int shipType) {
         this.shipType = shipType;
     }
 

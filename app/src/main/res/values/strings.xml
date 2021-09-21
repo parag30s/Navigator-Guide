@@ -42,7 +42,7 @@
     <string name="txt_edit_comment">Edit Comment</string>
     <string name="txt_link">Click to view example</string>
     <string name="txt_empty_report">You need to complete any section before generating a report for that.</string>
-    <string name="view_report_text">Wish to view this report? <font color='#F23B5F'>View</font>.</string>
+    <string name="view_report_text">Wish to view this report? <font color='#56F23B5F'>View</font>.</string>
     <string name="txt_email_body">
         <![CDATA[
         <p>Hello,<br /></p>
@@ -85,5 +85,8 @@
     <string name="txt_access_message">You are not allowed to access this section. If you wish to access please select extension date and contact to Administrator.</string>
     <string name="txt_access_yes">Yes, please</string>
     <string name="txt_access_no">No</string>
+    <string name="show_all">Show All</string>
+    <string name="reset">Reset</string>
+    <string name="hide">Hide</string>
 
 </resources>

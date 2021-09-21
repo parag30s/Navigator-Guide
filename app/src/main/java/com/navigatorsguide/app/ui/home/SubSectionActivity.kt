@@ -53,16 +53,6 @@ class SubSectionActivity : BaseActivity(), SubSectionAdapter.OnItemClickListener
             }
             setSubSectionAdapter()
         }
-
-//        if (PreferenceManager.getShipName(this).isNullOrEmpty()) {
-//            Alerter.create(this@SubSectionActivity)
-//                .setTitle("Alert!")
-//                .setText("Before you proceed, please confirm you have the ship's name updated under the Current Inspection Section.")
-//                .setDuration(3000)
-//                .setIcon(android.R.drawable.stat_sys_warning)
-//                .setBackgroundColorRes(R.color.colorAccent)
-//                .show()
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

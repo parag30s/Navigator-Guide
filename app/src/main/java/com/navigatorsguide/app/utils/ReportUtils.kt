@@ -18,11 +18,11 @@ import java.io.ByteArrayOutputStream
 class ReportUtils {
     companion object {
 
-        fun addBrandLogoHeader(context: Context, document: Document, shipName: String?) {
-            var basfontRegular: BaseFont =
-                BaseFont.createFont("assets/fonts/Helvetica.otf", "UTF-8", BaseFont.EMBEDDED)
-            var appFontRegular = Font(basfontRegular, 20.0F, Font.NORMAL, BaseColor.WHITE)
+        var basfontRegular: BaseFont =
+            BaseFont.createFont("assets/fonts/Helvetica.otf", "UTF-8", BaseFont.EMBEDDED)
+        var appFontRegular = Font(basfontRegular, 20.0F, Font.NORMAL, BaseColor.WHITE)
 
+        fun addBrandLogoHeader(context: Context, document: Document, shipName: String?) {
             val headerTable = PdfPTable(1)
             headerTable.setWidths(
                 floatArrayOf(1f)
@@ -62,10 +62,7 @@ class ReportUtils {
             email: String,
             rank: String,
             shipType: String,
-            risk: String,
-            date: String,
             section: String,
-            subSection: String,
         ) {
             val reportTable = PdfPTable(3)
             reportTable.widthPercentage = 100f
@@ -82,20 +79,10 @@ class ReportUtils {
             reportTable.addCell(getCell("Section: $section",
                 PdfPCell.ALIGN_LEFT,
                 BaseColor(13, 81, 152)))
-            reportTable.addCell(getCell("Subsection: $subSection",
-                PdfPCell.ALIGN_LEFT,
-                BaseColor(13, 81, 152)))
             reportTable.addCell(getCell("Ship Type: $shipType",
                 PdfPCell.ALIGN_LEFT,
                 BaseColor(13, 81, 152)))
-
-            reportTable.addCell(getCell("Build By: ${context.getString(R.string.app_name)}",
-                PdfPCell.ALIGN_LEFT,
-                BaseColor(13, 81, 152)))
-            reportTable.addCell(getCell("Risk: $risk",
-                PdfPCell.ALIGN_LEFT,
-                BaseColor(13, 81, 152)))
-            reportTable.addCell(getCell("Closure Date: $date",
+            reportTable.addCell(getCell("Created By: ${context.getString(R.string.app_name)}",
                 PdfPCell.ALIGN_LEFT,
                 BaseColor(13, 81, 152)))
 
@@ -227,6 +214,65 @@ class ReportUtils {
 
                 document.add(questionTable)
             }
+        }
+
+        fun addReportSubSectionTitle(document: Document, title: String) {
+            var appFontRegular = Font(basfontRegular, 16.0F, Font.NORMAL, BaseColor.BLACK)
+            val footerTable = PdfPTable(1)
+            footerTable.totalWidth = PageSize.A4.width
+            footerTable.isLockedWidth = true
+            val thankYouCell =
+                PdfPCell(Phrase(title, appFontRegular))
+            thankYouCell.border = Rectangle.NO_BORDER
+            thankYouCell.paddingLeft = 40f
+            thankYouCell.paddingTop = 40f
+            thankYouCell.horizontalAlignment = Rectangle.ALIGN_CENTER
+            footerTable.addCell(thankYouCell)
+            document.add(footerTable)
+        }
+
+        fun addSubsectionDetails(
+            document: Document,
+            observation: String,
+            risk: String,
+            date: String,
+            attachmentLink: String?,
+            evidence: String?,
+            comments: String?,
+        ) {
+            val reportTable = PdfPTable(2)
+            reportTable.widthPercentage = 90f
+            reportTable.addCell(getCell("Observation: $observation",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(20, 106, 169)))
+            reportTable.addCell(getCell("Additional Comment: $comments",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(20, 106, 169)))
+            reportTable.addCell(getCell("Risk : $risk",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(28, 106, 169)))
+            reportTable.addCell(getCell("Closure Date: $date",
+                PdfPCell.ALIGN_LEFT,
+                BaseColor(13, 106, 169)))
+
+            val linkTable = PdfPTable(2)
+            linkTable.widthPercentage = 90f
+            val attachmentCell =
+                getCell("Attachment Link: ", PdfPCell.ALIGN_LEFT, BaseColor(13, 106, 169))
+            val attachmentChunk = Chunk("$attachmentLink")
+            attachmentChunk.setAnchor("$attachmentLink")
+            attachmentCell?.phrase?.add(attachmentChunk)
+            linkTable.addCell(attachmentCell)
+
+            val evidenceCell =
+                getCell("Evidence Link: ", PdfPCell.ALIGN_LEFT, BaseColor(13, 106, 169))
+            val evidenceChunk = Chunk("$evidence")
+            evidenceChunk.setAnchor("$evidence")
+            evidenceCell?.phrase?.add(evidenceChunk)
+            linkTable.addCell(evidenceCell)
+
+            document.add(reportTable)
+            document.add(linkTable)
         }
 
         private fun getCell(text: String?, alignment: Int, color: BaseColor): PdfPCell? {

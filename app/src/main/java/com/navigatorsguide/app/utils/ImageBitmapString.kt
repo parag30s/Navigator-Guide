@@ -13,7 +13,7 @@ object ImageBitmapUtils {
         val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width, bitmap.height, false)
 
         val byteArrayOutputStream = ByteArrayOutputStream()
-        resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }

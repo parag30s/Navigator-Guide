@@ -15,7 +15,8 @@ import com.navigatorsguide.app.utils.DateConverter
         ShipType::class,
         Section::class,
         SubSection::class,
-        Questions::class
+        Questions::class,
+        User::class
     ), version = 1
 )
 @TypeConverters(DateConverter::class)
@@ -48,4 +49,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getSubSectionDao(): SubSectionDao
 
     abstract fun getQuestionsDao(): QuestionsDao
+
+    abstract fun getUsersDao(): UserDao
+
 }

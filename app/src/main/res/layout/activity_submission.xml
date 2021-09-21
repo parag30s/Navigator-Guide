@@ -235,7 +235,59 @@
                         android:src="@drawable/ic_baseline_delete"
                         android:visibility="gone" />
                 </FrameLayout>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:padding="@dimen/dimen_5"
+                android:text="Evidence of Observation"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/text_16" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:background="@drawable/edittext_background">
+
+                <EditText
+                    android:id="@+id/evidence_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:enabled="true"
+                    android:focusable="false"
+                    android:hint="Evidence"
+                    android:inputType="text"
+                    android:maxHeight="90dp"
+                    android:minHeight="45dp"
+                    android:paddingStart="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_20"
+                    android:paddingEnd="@dimen/dimen_50"
+                    android:paddingRight="@dimen/dimen_50"
+                    android:textSize="@dimen/text_16" />
+
+                <ImageButton
+                    android:id="@+id/delete_evidence_button"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="@dimen/dimen_10"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:background="@color/fui_transparent"
+                    android:onClick="onEvidenceDelete"
+                    android:padding="@dimen/dimen_2"
+                    android:src="@drawable/ic_baseline_delete"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -272,10 +324,8 @@
                 android:layout_below="@id/password_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:onClick="onSubmission"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:onClick="onValidate"
                 android:text="Submit"
                 android:textSize="@dimen/text_14" />
 

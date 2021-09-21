@@ -45,6 +45,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         visibilityView.setOnClickListener(this)
         loginButton.setOnClickListener(this)
         registerView.setOnClickListener(this)
+        learnMoreButton.setOnClickListener(this)
 
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference(AppConstants.USER_REFERENCE)
         return view
@@ -83,6 +84,9 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
                     R.id.container,
                     RegisterFragment()
                 ).addToBackStack(null).commit()
+            }
+            R.id.learn_more_button -> {
+                AppUtils.showWebViewDialog(requireActivity(), "https://guide2inspections.com/")
             }
         }
     }

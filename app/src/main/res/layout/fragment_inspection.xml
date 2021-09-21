@@ -21,6 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <ImageView
+                android:id="@+id/back_arrow"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="@dimen/dimen_10"

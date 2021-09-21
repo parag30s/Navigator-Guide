@@ -20,6 +20,10 @@ class OptionsBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val value = requireArguments().getString("KEY")
+        if (value != null && value.contentEquals("CAMERA")) {
+            from_file_system.visibility = View.GONE
+        }
         setUpViews()
     }
 

@@ -6,6 +6,8 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
@@ -27,7 +29,6 @@ import com.navigatorsguide.app.utils.AppConstants
 import com.navigatorsguide.app.utils.AppUtils
 import com.navigatorsguide.app.utils.OptionsBottomSheetFragment
 import com.tapadoo.alerter.Alerter
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -51,9 +52,11 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
     lateinit var observationEditText: EditText
     lateinit var dateEditText: EditText
     lateinit var browseEditText: EditText
+    lateinit var evidenceEditText: EditText
     lateinit var commentEditText: EditText
     lateinit var submitButton: Button
     lateinit var deleteFileButton: ImageButton
+    lateinit var deleteEvidenceButton: ImageButton
     var subsId: Int? = null
     var sectionName: String? = null
     var sitedSelection: Int = 0
@@ -61,12 +64,18 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
     var day = 0
     var month: Int = 0
     var year: Int = 0
-    var attachmentLink: String? = null
+    private var attachmentLink: String? = null
+    private var evidenceLink: String? = null
     private var FILE_REQUEST = 10001
     private var CAMERA_REQUEST = 10002
+    private var EVIDANCE_REQUEST = 10003
     private var fileUri: Uri? = null
     private var fileName: String? = null
     private var fileBitmap: Bitmap? = null
+    private var evidenceUri: Uri? = null
+    private var evidenceName: String? = null
+    private var evidenceBitmap: Bitmap? = null
+    var evidenceClicked = false
 
     private var mStorageReference: StorageReference? = null
     private var mFileReference: StorageReference? = null
@@ -91,9 +100,11 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
         observationEditText = findViewById(R.id.observations_edittext)
         dateEditText = findViewById(R.id.date_edittext)
         browseEditText = findViewById(R.id.browse_edittext)
+        evidenceEditText = findViewById(R.id.evidence_edittext)
         commentEditText = findViewById(R.id.comments_edittext)
         submitButton = findViewById(R.id.submit_button)
         deleteFileButton = findViewById(R.id.delete_file_button)
+        deleteEvidenceButton = findViewById(R.id.delete_evidence_button)
 
         dateEditText.setOnClickListener {
             val calendar: Calendar = Calendar.getInstance()
@@ -114,8 +125,28 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
                     "Preview is not available for images taken from Camera.",
                     Toast.LENGTH_SHORT).show()
             } else {
+                evidenceClicked = false
                 supportFragmentManager.let {
                     OptionsBottomSheetFragment.newInstance(Bundle()).apply {
+                        show(it, tag)
+                    }
+                }
+            }
+        }
+
+        evidenceEditText.setOnClickListener {
+            if (evidenceUri != null && evidenceName != null) {
+                AppUtils.openFilePreview(this, evidenceUri!!, evidenceName!!)
+            } else if (evidenceBitmap != null) {
+                Toast.makeText(this,
+                    "Preview is not available for images taken from Camera.",
+                    Toast.LENGTH_SHORT).show()
+            } else {
+                evidenceClicked = true
+                val args = Bundle()
+                args.putString("KEY", "CAMERA")
+                supportFragmentManager.let {
+                    OptionsBottomSheetFragment.newInstance(args).apply {
                         show(it, tag)
                     }
                 }
@@ -180,7 +211,52 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
         }
     }
 
-    fun onSubmission(view: View) {
+    fun onValidate(view: View) {
+        if (observationEditText.text.toString().isEmpty() && sitedSelection == 1) {
+            observationEditText.error = "Please enter your observation."
+            return
+        }
+
+        launch {
+            withContext(Dispatchers.Default) {
+                val user = AppDatabase.invoke(context = this@SubmissionActivity)
+                    .getUsersDao().getUserAccess(AppConstants.USER_ACCESS_EVIDENCE)
+                if (user.value == AppConstants.REGION_COMPULSORY && evidenceBitmap == null) {
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(this@SubmissionActivity,
+                            "Please submit evidence of observation.",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Handler(Looper.getMainLooper()).post {
+                        onSubmission()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onSubmission() {
+        if (evidenceBitmap != null) {
+            submitEvidence()
+        } else {
+            submitAttachment()
+        }
+    }
+
+    private fun submitEvidence() {
+        mFileReference =
+            mStorageReference!!.child("/evidence_files/${
+                PreferenceManager.getRegistrationInfo(this)?.createdAt
+            }/Snapshot_${
+                AppUtils.getStorageDate(System.currentTimeMillis().toString())
+            }.jpg")
+
+        uploadEvidenceBitmap(evidenceBitmap!!)
+        showFullScreenProgress()
+    }
+
+    private fun submitAttachment() {
         if (fileUri != null && fileName != null) {
             mFileReference =
                 mStorageReference!!.child("/attachment_files/${
@@ -194,10 +270,10 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
                 mStorageReference!!.child("/attachment_files/${
                     PreferenceManager.getRegistrationInfo(this)?.createdAt
                 }/Snapshot_${
-                    AppUtils.getDate(System.currentTimeMillis().toString()).replace('/', '-')
+                    AppUtils.getStorageDate(System.currentTimeMillis().toString())
                 }.jpg")
 
-            uploadBitmap(fileBitmap!!)
+            uploadAttachmentBitmap(fileBitmap!!)
             showFullScreenProgress()
         } else {
             saveObservationFeedback()
@@ -209,15 +285,12 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
         var date = dateEditText.text.toString()
         val comment = commentEditText.text.toString()
 
-        if (observation.isEmpty() && sitedSelection == 1) {
-            observationEditText.error = "Please enter your observation."
-            return
-        }
-
         if (date.isEmpty()) {
             val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
             date = simpleDateFormat.format(Date())
         }
+
+        hideFullScreenProgress()
 
         launch {
             withContext(Dispatchers.Default) {
@@ -230,7 +303,7 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
                         comment,
                         riskSelection,
                         AppConstants.SECTION_COMPLETE,
-                        attachmentLink
+                        attachmentLink, evidenceLink
                     )
 
                 var parentId =
@@ -255,6 +328,14 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
         fileName = null
         fileBitmap = null
         deleteFileButton.visibility = View.GONE
+    }
+
+    fun onEvidenceDelete(view: View) {
+        evidenceEditText.setText("")
+        evidenceUri = null
+        evidenceName = null
+        evidenceBitmap = null
+        deleteEvidenceButton.visibility = View.GONE
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -306,9 +387,15 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
             } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
                 fileBitmap = data?.extras?.get("data") as Bitmap
                 browseEditText.setText("Snapshot_${
-                    AppUtils.getDate(System.currentTimeMillis().toString()).replace('/', '-')
+                    AppUtils.getStorageDate(System.currentTimeMillis().toString())
                 }.jpg")
                 deleteFileButton.visibility = View.VISIBLE
+            } else if (requestCode == EVIDANCE_REQUEST && resultCode == RESULT_OK) {
+                evidenceBitmap = data?.extras?.get("data") as Bitmap
+                evidenceEditText.setText("Snapshot_${
+                    AppUtils.getStorageDate(System.currentTimeMillis().toString())
+                }.jpg")
+                deleteEvidenceButton.visibility = View.VISIBLE
             }
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
@@ -332,7 +419,7 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
                         val uri = task.result
                         Log.d(TAG, "File uploaded..$uri")
                         attachmentLink = uri.toString()
-                        hideFullScreenProgress()
+//                        hideFullScreenProgress()
                         saveObservationFeedback()
                     } else {
                         Log.d(TAG, "File failed..")
@@ -342,7 +429,7 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
         }
     }
 
-    private fun uploadBitmap(bitmap: Bitmap) {
+    private fun uploadAttachmentBitmap(bitmap: Bitmap) {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
@@ -354,8 +441,29 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
                 mFileReference?.downloadUrl?.addOnSuccessListener { uri ->
                     Log.d(TAG, "Download Photo successful URL: $uri")
                     attachmentLink = uri.toString()
-                    hideFullScreenProgress()
+//                    hideFullScreenProgress()
                     saveObservationFeedback()
+                }?.addOnFailureListener { e ->
+                    Log.e(TAG, "downloadUrl: something went wrong: " + e.message)
+                    hideFullScreenProgress()
+                }
+            }
+    }
+
+    private fun uploadEvidenceBitmap(bitmap: Bitmap) {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+
+        mFileReference?.putBytes(byteArray)
+            ?.addOnFailureListener { Log.d(TAG, "handleUpload onFailure") }
+            ?.addOnSuccessListener {
+                Log.d(TAG, "handleUpload onSuccess")
+                mFileReference?.downloadUrl?.addOnSuccessListener { uri ->
+                    Log.d(TAG, "Download Photo successful URL: $uri")
+                    evidenceLink = uri.toString()
+//                    hideFullScreenProgress()
+                    submitAttachment()
                 }?.addOnFailureListener { e ->
                     Log.e(TAG, "downloadUrl: something went wrong: " + e.message)
                     hideFullScreenProgress()
@@ -412,7 +520,11 @@ class SubmissionActivity : BaseActivity(), DatePickerDialog.OnDateSetListener,
             "CAMERA" -> {
                 val cameraIntent = Intent()
                 cameraIntent.action = MediaStore.ACTION_IMAGE_CAPTURE
-                startActivityForResult(cameraIntent, CAMERA_REQUEST)
+                if (evidenceClicked) {
+                    startActivityForResult(cameraIntent, EVIDANCE_REQUEST)
+                } else {
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST)
+                }
             }
             else -> {
                 Toast.makeText(this, getString(R.string.err_msg_res_failed), Toast.LENGTH_SHORT)

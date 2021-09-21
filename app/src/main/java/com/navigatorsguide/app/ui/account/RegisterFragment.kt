@@ -40,7 +40,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
     private var mFirebaseReference: DatabaseReference? = null
     private var mFirebaseDatabase: FirebaseDatabase? = null
 
-    private lateinit var mRankList: List<Rank> 
+    private lateinit var mRankList: List<Rank>
     private lateinit var mShipTypeList: List<ShipType>
     private lateinit var mKey: String
     private lateinit var mToken: String
@@ -48,7 +48,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view: View = inflater.inflate(R.layout.fragment_register, container, false)
         nameEditText = view.findViewById(R.id.name_edittext)
@@ -84,7 +84,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
                     return@OnCompleteListener
                 }
 
-               mToken = task.result?.token.toString()
+                mToken = task.result?.token.toString()
             })
         return view
     }
@@ -145,8 +145,10 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
         val name: String = nameEditText.getText().toString()
         val email: String = emailEditText.getText().toString()
         val password: String = passwordEditText.getText().toString()
-        val position: String = positionEditText.getText().toString()
-        val shipType: String = shipTypeEditText.getText().toString()
+        val position: Int? =
+            mRankList.find { it.rankName == positionEditText.text.toString() }?.rankid
+        val shipType: Int? =
+            mShipTypeList.find { it.typeName == shipTypeEditText.text.toString() }?.typeId
 
         val userId: String = AppUtils.checkUserId(email.split("@").component1())
 
@@ -181,8 +183,8 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
         name: String,
         email: String,
         password: String,
-        position: String,
-        shipType: String
+        position: Int?,
+        shipType: Int?,
     ) {
         mKey = mFirebaseReference!!.push().key.toString()
         val user = User(
@@ -190,8 +192,8 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
             name,
             email,
             password,
-            position,
-            shipType,
+            position!!,
+            shipType!!,
             mToken,
             System.currentTimeMillis().toString()
         )
